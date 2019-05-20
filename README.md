@@ -87,4 +87,9 @@ quant invest project
 ## 스토리보드
 https://ovenapp.io/project/lCVSQK7IdwfnYlTIZz7P4bbY5l68j7kr#mr496
 
+## Company Guide
+http://comp.fnguide.com/SVO2/asp/SVD_Main.asp
+
+위 사이트에서 Data를 crawling 해서 저장
+
  
