@@ -5,7 +5,7 @@ import unittest
 import logging
 
 cur_path = os.path.dirname(__file__)
-base_path = os.path.join(cur_path, "..", "main")
+base_path = os.path.join(cur_path, "..", "crawler")
 
 sys.path.append(base_path)
 
