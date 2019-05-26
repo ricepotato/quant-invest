@@ -1,16 +1,18 @@
 #-*- coding: utf-8 -*-
 
 import os
+import sys
 import logging
 
 cur_path = os.path.dirname(__file__)
 base_path = os.path.abspath(os.path.join(cur_path, ".."))
+#comm_path = os.path.abspath(os.path.join(cur_path, "..", "common"))
 
-from common.logger import LogCfg
+sys.path.append(base_path)
+
+from common.logger.logger import LogCfg
 
 log = logging.getLogger("qi.crawler.crawler")
-log.addHandler(logging.StreamHandler())
-log.setLevel(logging.INFO)
 
 class Crawler(object):
     def __init__(self):
