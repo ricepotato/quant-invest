@@ -10,7 +10,7 @@ base_path = os.path.abspath(os.path.join(cur_path, ".."))
 
 sys.path.append(base_path)
 
-from common.logger.logger import LogCfg
+import common.logger.logcfg
 
 log = logging.getLogger("qi.crawler.crawler")
 

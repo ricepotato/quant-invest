@@ -1,16 +1,23 @@
 #-*- coding: utf-8 -*-
 
+import os
+import sys
 import logging
+
+cur_path = os.path.dirname(__file__)
+base_path = os.path.abspath(os.path.join(cur_path, ".."))
+
+sys.path.append(base_path)
+
+import common.logger.logcfg
+
+log = logging.getLogger('qi.server')
 
 try:
     from flask import Flask, jsonify
     from flask_restful import Resource, Api
 except ImportError as e:
     log.error("import error. install flask 'pip install flask'")
-
-log = logging.getLogger('qi.server')
-log.addHandler(logging.StreamHandler())
-log.setLevel(logging.INFO)    
 
 app = Flask(__name__)
 
