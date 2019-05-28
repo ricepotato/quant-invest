@@ -117,6 +117,59 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOG_PATH = "/var/log/django/"
+
+LOGGING = {
+    "version":1,
+    "disable_existing_loggers":False,
+    "filters":{
+        "require_debug_false":{
+            "()":"django.utils.log.RequireDebugFalse"
+        }
+    },
+    "formatters":{
+        "verbose":{
+            "fotmat":"[%(loglevel)s|%(asctime)s|%(name)s] %(message)s",
+            "style":"{"
+        },
+        "simple":{
+            "format":"[%(loglevel)s|%(asctime)s|%(name)s] %(message)s",
+            "style":"{"
+        }
+    },
+    "handlers":{
+        "file":{
+            "level":"INFO",
+            "class":"logging.handlers.RotatingFileHandler",
+            "filename":os.path.join(LOG_PATH, "django.log"),
+            "maxBytes":1024 * 1024 * 20,
+            "backupCount":10,
+            "formatter":"verbose"
+        },
+        "file_timed":{
+            "level":"INFO",
+            "class":"logging.handlers.TimedRotatingFileHandler",
+            "filename":os.path.join(LOG_PATH, "django.log"),
+            "when": "D",
+            "interval": 1,
+            "backupCount": 15,
+            "formatter":"verbose"
+        },
+        "console":{
+            "level":"INFO",
+            "class":"logging.StreamHandler",
+            "formatter":"simple"
+        }
+    },
+    "loggers":{
+        "qi":{
+            "handlers":["file_timed", "console"],
+            "level":"DEBUG",
+            "filters":["require_debug_false"],
+            "propagate":True
+        }
+    }
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
