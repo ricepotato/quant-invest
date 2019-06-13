@@ -9,8 +9,6 @@ from sqlalchemy import Index, UniqueConstraint
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
-
-
 cur_path = os.path.dirname(__file__)
 comm_path = os.path.join(cur_path, "..")
 
