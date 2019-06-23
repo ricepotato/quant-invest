@@ -51,12 +51,41 @@ conn_str = "mysql://{}:{}@{}:{}/{}?charset=utf8".format(cfg["user"], cfg["passwo
 Base = declarative_base()
 engine = create_engine(conn_str, convert_unicode=False) 
 
+# 시장 구분 용도
+class Market(Base):
+    __tablename__ = "market"
+
+    id = Column(Integer, primary_key=True) # pkey
+    name = Column(String(10)) # KOSDAQ, KOSPI
+
+    def __init__(self, name):
+        self.name = name
+
+# 업종
+class Category(Base):
+    __tablename__ = "category"
+
+    id = Column(Integer, primary_key=True) # pkey
+    cate_code = Column(String(20)) # 업종코드
+    description = Column(String(100)) # 업종이름 ex)영화, 비디오물, 방송프로그램 제작 및 배급업
+
+    UniqueConstraint(cate_code, name="unique_cate_code")
+
+    def __init__(self, cate_code, description):
+        self.cate_code = cate_code
+        self.description = description
+
+    def __repr__(self):
+        return "<Category('%s', '%s')>" % (self.cate_code, self.description)
+
 class Company(Base):
     __tablename__ = "company"
 
     id = Column(Integer, primary_key=True) # pkey
     name = Column(String(50)) # 종목명
-    code = Column(String(20)) # 종목 코드
+    comp_code = Column(String(20)) # 종목 코드
+    category = Column(Integer, ForeignKey("category.id", ondelete="CASCADE", onupdate="CASCADE"))
+    market = Column(Integer, ForeignKey("market.id", ondelete="CASCADE", onupdate="CASCADE"))
 
     UniqueConstraint(name, code, name="unique_name")
     #UniqueConstraint(code, name="unique_code")
@@ -83,6 +112,7 @@ class FinancialReport(Base):
     pbr = Column(FLOAT)
     roa = Column(FLOAT)
     roe = Column(FLOAT)
+    evebita = Column(FLOAT)
     marketcap = Column(Integer) # 시가총액
 
     Index("per_idx", per)
