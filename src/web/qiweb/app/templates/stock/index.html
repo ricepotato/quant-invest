@@ -1,6 +1,11 @@
 {% extends "app/layout.html" %}
 
 {% block content %}
+<style>
+.stock_form input[type="text"]{
+    width:120px;
+}
+</style>
 <div class="row">
     <h2>종목추천</h2>
 </div>
@@ -14,15 +19,25 @@
         </div>
 </div>
 <div class="row">
-    <div>
-       최소 ROA <input type="text"> 
-       최소 PER <input type="text">
-       최소 시가총액(억원) <input type="text">
-       종목 수 <input type="text">
-       <input type="checkbox" id="chk_fin_stock"> <label for="chk_fin_stock">금융주 제외</label>
-       <input type="checkbox" id="chk_pub_stock"> <label for="chk_pub_stock">공익기업주 제외</label>
-    </div>
-
+    <form class="form-inline">
+        <div class="form-group stock_form">
+            <label for="txt_min_roa">최소 ROA</label> 
+            <input type="text" id="txt_min_roa" class="form-control" placeholder="최소 ROA"> 
+            <label for="txt_min_per">최소 PER</label> 
+            <input type="text" id="txt_min_per" class="form-control" placeholder="최소 PER">
+            <label for="txt_min_market_cap">최소 시가총액(억원)</label> 
+            <input type="text" id="txt_min_market_cap" class="form-control" placeholder="최소 시가총액(억원)">
+        </div>
+        <div class="form-group stock_form">
+            <label for="stk_count">종목 수</label> 
+            <input type="text" value="50" id="stk_count" class="form-control">
+            <input type="checkbox" id="chk_fin_stock"> 
+            <label for="chk_fin_stock">금융주 제외</label>
+            <input type="checkbox" id="chk_pub_stock"> 
+            <label for="chk_pub_stock">공익기업주 제외</label>
+            <button type="submit" class="btn btn-primary">새로고침</button>
+        </div>
+    </form>
 </div>
 <div>
     <table>
