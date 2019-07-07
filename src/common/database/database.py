@@ -4,10 +4,14 @@ import sys
 import json
 import logging
 
-from sqlalchemy import create_engine, Column, Integer, String, FLOAT
+from contextlib import contextmanager
+from sqlalchemy import create_engine, Column, Integer, String, FLOAT, DATETIME
 from sqlalchemy import Index, UniqueConstraint
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError
+
 
 cur_path = os.path.dirname(__file__)
 comm_path = os.path.join(cur_path, "..")
@@ -58,25 +62,30 @@ class Market(Base):
     id = Column(Integer, primary_key=True) # pkey
     name = Column(String(10)) # KOSDAQ, KOSPI
 
+    UniqueConstraint(name, name="unique_name")
+
     def __init__(self, name):
         self.name = name
+
+    def __repr__(self):
+        return "<Market('%s')>" % (self.name)
 
 # 업종
 class Category(Base):
     __tablename__ = "category"
 
     id = Column(Integer, primary_key=True) # pkey
-    cate_code = Column(String(20)) # 업종코드
+    code = Column(String(20)) # 업종코드
     description = Column(String(100)) # 업종이름 ex)영화, 비디오물, 방송프로그램 제작 및 배급업
 
-    UniqueConstraint(cate_code, name="unique_cate_code")
+    UniqueConstraint(code, name="unique_cate_code")
 
-    def __init__(self, cate_code, description):
-        self.cate_code = cate_code
+    def __init__(self, code, description):
+        self.code = code
         self.description = description
 
     def __repr__(self):
-        return "<Category('%s', '%s')>" % (self.cate_code, self.description)
+        return "<Category('%s', '%s')>" % (self.code, self.description)
 
 class Company(Base):
     __tablename__ = "company"
@@ -87,16 +96,18 @@ class Company(Base):
     category = Column(Integer, ForeignKey("category.id", ondelete="CASCADE", onupdate="CASCADE"))
     market = Column(Integer, ForeignKey("market.id", ondelete="CASCADE", onupdate="CASCADE"))
 
-    UniqueConstraint(name, code, name="unique_name")
+    UniqueConstraint(name, comp_code, name="unique_name")
     #UniqueConstraint(code, name="unique_code")
     #Index("name_idx", name)
     #Index("code_idx", code)
 
     #__table_args__ = {""}
 
-    def __init__(self, name, code):
+    def __init__(self, name, code, category, market):
         self.name = name
         self.code = code
+        self.category = category
+        self.market = market
 
     def __repr__(self):
         return "<Stock('%s', '%s')>" % (self.name, self.code)
@@ -114,6 +125,7 @@ class FinancialReport(Base):
     roe = Column(FLOAT)
     evebita = Column(FLOAT)
     marketcap = Column(Integer) # 시가총액
+    date_insert = Column(DATETIME)
 
     Index("per_idx", per)
     Index("pbr_idx", pbr)
@@ -127,5 +139,56 @@ class FinancialReport(Base):
         return "<Stock('%d', '%d')>" % (self.id, self.comp_id)
 
 
-Base.metadata.drop_all(engine)
-Base.metadata.create_all(engine)
+class Singleton(type):
+    """Singleton.
+    @see: http://stackoverflow.com/questions/6760685/creating-a-singleton-in-python
+    """
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
+
+class Database(object):
+
+    __metaclass__ = Singleton
+
+    def __init__(self):
+        self.engine = engine
+        self.Session = sessionmaker()
+        self.Session.configure(bind=engine)
+
+    def __del__(self):
+        """Disconnects pool."""
+        self.engine.dispose()
+
+    @contextmanager
+    def session_scope(self):
+        """Provide a transactional scope around a series of operations."""
+        session = self.Session()
+        try:
+            yield session
+            session.flush()
+            session.commit()
+        except SQLAlchemyError as e:
+            log.error("Database Error. %s", e)
+            session.rollback()
+        finally:
+            session.close()
+
+    def create_all(self):
+        try:
+            Base.metadata.create_all(self.engine)
+        except SQLAlchemyError as e:
+            log.error("Unable to create or connect to database: %s", e)
+
+    def drop_all(self):
+        """Drop all tables."""
+        try:
+            Base.metadata.drop_all(self.engine)
+        except SQLAlchemyError as e:
+            log.error("Unable to drop all tables of the database: %s", e)
+
+#Base.metadata.drop_all(engine)
+#Base.metadata.create_all(engine)
