@@ -18,8 +18,9 @@ class Dao(object):
     def _insert(self, obj):
         with self.db.session_scope() as s:
             s.add(obj)
-            id = obj.id
-        return id
+            s.flush()
+            res = obj.to_dict()
+        return res
 
 class MarketDao(Dao):
     def insert(self, name):
@@ -35,7 +36,7 @@ class CategoryDao(Dao):
 
 class CompanyDao(Dao):
     def insert(self, name, code, category, market):
-        obj = Category(name, code, category, market)
+        obj = Company(name, code, category, market)
         obj = self._insert(obj)
         return obj.id
     

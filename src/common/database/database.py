@@ -10,6 +10,7 @@ from sqlalchemy import Index, UniqueConstraint
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.inspection import inspect
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
 
@@ -55,8 +56,42 @@ conn_str = "mysql://{}:{}@{}:{}/{}?charset=utf8".format(cfg["user"], cfg["passwo
 Base = declarative_base()
 engine = create_engine(conn_str, convert_unicode=False) 
 
+class Dictionary(dict):
+    
+    def __getattr__(self, key):
+        return self[key]
+
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
+
+class Serializer(object):
+    obj_map = {}
+
+    def _make_dict(self, attr):
+        if isinstance(attr, Base):
+            res = self.obj_map.get(id(attr), None)
+            if not res:
+                return attr.to_dict()
+            else:
+                return res
+        if isinstance(attr, list):
+            res = []
+            for item in attr:
+                res.append(self._make_dict(item))
+
+        return attr
+
+    def to_dict(self):
+        ret = Dictionary()
+        self.obj_map[id(self)] = ret
+        for key in inspect(self).attrs.keys():
+            ret[key] = self._make_dict(getattr(self, key))
+
+        return ret
+
+
 # 시장 구분 용도
-class Market(Base):
+class Market(Base, Serializer):
     __tablename__ = "market"
 
     id = Column(Integer, primary_key=True) # pkey
@@ -71,7 +106,7 @@ class Market(Base):
         return "<Market('%s')>" % (self.name)
 
 # 업종
-class Category(Base):
+class Category(Base, Serializer):
     __tablename__ = "category"
 
     id = Column(Integer, primary_key=True) # pkey
@@ -87,7 +122,7 @@ class Category(Base):
     def __repr__(self):
         return "<Category('%s', '%s')>" % (self.code, self.description)
 
-class Company(Base):
+class Company(Base, Serializer):
     __tablename__ = "company"
 
     id = Column(Integer, primary_key=True) # pkey
@@ -113,7 +148,7 @@ class Company(Base):
         return "<Stock('%s', '%s')>" % (self.name, self.code)
 
 
-class FinancialReport(Base):
+class FinancialReport(Base, Serializer):
     __tablename__ = "fr"
 
     id = Column(Integer, primary_key=True) # pkey
@@ -169,7 +204,6 @@ class Database(object):
         session = self.Session()
         try:
             yield session
-            session.flush()
             session.commit()
         except SQLAlchemyError as e:
             log.error("Database Error. %s", e)
