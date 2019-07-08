@@ -10,7 +10,8 @@ log = logging.getLogger("qi.data.reader")
 
 
 class SCReader(object):
-    """ Stock csv reader """
+    """ Stock csv reader 
+    주식정보 csv 파일을 읽어 list 로 반환한다. """
     def __init__(self):
         pass
 
@@ -33,9 +34,10 @@ class SCReader(object):
         code = col_list[1]
         name = col_list[2]
         cate_code = col_list[3]
+        desc = col_list[4]
         
         return {"num":num, "code":code, "name":name, 
-                "category_code":cate_code}
+                "category_code":cate_code, "desc":desc}
 
     def parse(self, data):
         

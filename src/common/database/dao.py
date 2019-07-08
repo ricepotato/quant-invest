@@ -8,12 +8,11 @@ import logger.logcfg
 
 log = logging.getLogger("qi.common.database.dao")
 
-from sqlalchemy.orm import sessionmaker
 from database.database import *
 
 class Dao(object):
-    def __init__(self, engine=None):
-        self.db = Database()
+    def __init__(self, db):
+        self.db = db
 
     def _insert(self, obj):
         with self.db.session_scope() as s:
@@ -27,6 +26,17 @@ class MarketDao(Dao):
         obj = Market(name)
         obj = self._insert(obj)
         return obj.id
+
+    def get_market(self, name):
+        with self.db.session_scope() as s:
+            obj = s.query(Market).filter(Market.name == name).first()
+            if obj:
+                res = obj.to_dict()
+            else:
+                res = None
+
+        return res
+                
 
 class CategoryDao(Dao):
     def insert(self, code, description):

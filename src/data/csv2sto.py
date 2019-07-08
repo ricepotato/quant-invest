@@ -10,18 +10,28 @@ comm_path = os.path.abspath(os.path.join(cur_path, "..", "common"))
 sys.path.append(comm_path)
 
 import logger.logcfg
-from database.dao import *
 from stockreder import SCReader
 
-log = logging.getLogger("qi.data.csv2db")
+log = logging.getLogger("qi.data.csv2sto")
 
-def main():
+class Csv2Sto(object):
+    def __init__(self, reader, sto):
+        self.reader = reader
+        self.sto = sto
+
+    def c2s(self, market, csv_path):
+        data = self.reader.read_file(csv_path)
+        market_id = self.sto.add_market(market)
+        count = self.sto.add_data(market_id, data)
+        return count
+
+"""def main():
 
     kosdaq = os.path.join(cur_path, "KOSDAQ.csv")
     kospi = os.path.join(cur_path, "KOSPI.csv")
 
     reader = SCReader()
-    kosdaq_data = reader.read_file(kosdaq)
+    kosdaq_data = reader.read_file(kosdaq)"""
     
 
 

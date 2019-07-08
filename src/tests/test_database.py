@@ -10,7 +10,7 @@ base_path = os.path.join(cur_path, "..")
 
 sys.path.append(base_path)
 
-from common.database.database import *
+from common.database.database import Database
 from common.database.dao import *
 
 log = logging.getLogger("qi.tests.database")
@@ -25,12 +25,24 @@ class TestDatabase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_database(self):
-        mrk_dao = MarketDao(engine)
-        res = mrk_dao.insert("KOSDAQ")
-        self.assertIsNotNone(res)
-        mrk_dao.insert("KOSPI")
-        self.assertIsNotNone(res)
+    def test_mrk_dao(self):
+        market = "KOSDAQ"
+        db = Database()
+        mrk_dao = MarketDao(db)
+        res = mrk_dao.insert(market)
+        obj = mrk_dao.get_market(market)
+        self.assertEqual(res, obj.id)
+
+        market = "KOSPI"
+        res = mrk_dao.insert(market)
+        obj = mrk_dao.get_market(market)
+        self.assertEqual(res, obj.id)
+
+        market = "NASDAQ"
+        obj = mrk_dao.get_market(market)
+        self.assertIsNone(obj)
+
+        
 
 
 
