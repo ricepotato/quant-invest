@@ -99,6 +99,10 @@ class Market(Base, Serializer):
 
     UniqueConstraint(name, name="unique_name")
 
+    __table_args__ = {'mysql_engine':'InnoDB', 
+                      'mysql_charset':'utf8', 
+                      'mysql_collate':'utf8_general_ci'}
+
     def __init__(self, name):
         self.name = name
 
@@ -115,6 +119,10 @@ class Category(Base, Serializer):
 
     UniqueConstraint(code, name="unique_cate_code")
 
+    __table_args__ = {'mysql_engine':'InnoDB', 
+                      'mysql_charset':'utf8', 
+                      'mysql_collate':'utf8_general_ci'}
+
     def __init__(self, code, description):
         self.code = code
         self.description = description
@@ -127,16 +135,18 @@ class Company(Base, Serializer):
 
     id = Column(Integer, primary_key=True) # pkey
     name = Column(String(50)) # 종목명
-    comp_code = Column(String(20)) # 종목 코드
+    code = Column(String(20)) # 종목 코드
     category = Column(Integer, ForeignKey("category.id", ondelete="CASCADE", onupdate="CASCADE"))
     market = Column(Integer, ForeignKey("market.id", ondelete="CASCADE", onupdate="CASCADE"))
 
-    UniqueConstraint(name, comp_code, name="unique_name")
+    UniqueConstraint(name, code, name="unique_name")
     #UniqueConstraint(code, name="unique_code")
     #Index("name_idx", name)
     #Index("code_idx", code)
 
-    #__table_args__ = {""}
+    __table_args__ = {'mysql_engine':'InnoDB', 
+                      'mysql_charset':'utf8', 
+                      'mysql_collate':'utf8_general_ci'}
 
     def __init__(self, name, code, category, market):
         self.name = name
@@ -166,6 +176,10 @@ class FinancialReport(Base, Serializer):
     Index("pbr_idx", pbr)
     Index("roa_idx", roa)
     Index("roe_idx", roe)
+
+    __table_args__ = {'mysql_engine':'InnoDB', 
+                      'mysql_charset':'utf8', 
+                      'mysql_collate':'utf8_general_ci'}
 
     def __init__(self, comp_id):
         self.code = comp_id
@@ -223,6 +237,3 @@ class Database(object):
             Base.metadata.drop_all(self.engine)
         except SQLAlchemyError as e:
             log.error("Unable to drop all tables of the database: %s", e)
-
-#Base.metadata.drop_all(engine)
-#Base.metadata.create_all(engine)

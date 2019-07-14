@@ -11,6 +11,9 @@ log = logging.getLogger("qi.common.database.dao")
 from database.database import *
 
 class Dao(object):
+    
+    __metaclass__ = Singleton
+
     def __init__(self, db):
         self.db = db
 
