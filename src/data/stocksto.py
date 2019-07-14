@@ -23,7 +23,7 @@ class StockStore(object):
 class StockDbStore(StockStore):
     """ 주식정보를 database 에 저장한다 """
     def __init__(self, mrk_dao, category_dao, company_dao):
-        self.db = db
+        #self.db = db
         self.market = mrk_dao
         self.category = category_dao
         self.company = company_dao

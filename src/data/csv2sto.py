@@ -25,18 +25,8 @@ class Csv2Sto(object):
         count = self.sto.add_data(market_id, data)
         return count
 
-"""def main():
-
-    kosdaq = os.path.join(cur_path, "KOSDAQ.csv")
-    kospi = os.path.join(cur_path, "KOSPI.csv")
-
-    reader = SCReader()
-    kosdaq_data = reader.read_file(kosdaq)"""
-    
-
-
-
-
+def main():
+    pass
 
 if __name__ == "__main__":
     main()
