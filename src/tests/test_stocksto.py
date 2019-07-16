@@ -38,6 +38,8 @@ class TestStockSto(unittest.TestCase):
         log.info("test_sto")
         id = self.store.add_market("KOSDAQ")
         self.store.add_data(id, [{"num":1, "name":"name1", "code":"001001", 
+                                  "category_code":"301001", "desc":u"종목"},
+                                  {"num":2, "name":"name2", "code":"001002", 
                                   "category_code":"301001", "desc":u"종목"}])
 
     
