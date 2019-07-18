@@ -54,7 +54,7 @@ cfg = get_conf()
 conn_str = "mysql://{}:{}@{}:{}/{}?charset=utf8".format(cfg["user"], cfg["password"], 
                                            cfg["host"], cfg["port"], cfg["database"])
 Base = declarative_base()
-engine = create_engine(conn_str, convert_unicode=False) 
+engine = create_engine(conn_str, convert_unicode=False, echo=False) 
 
 class Dictionary(dict):
     

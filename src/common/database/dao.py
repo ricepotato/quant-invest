@@ -21,7 +21,7 @@ class InvalidColumnName(DatabaseError):
 
 def enum(*seq, **named):
     enums = dict(zip(seq, range(len(seq))), **named)
-    rev = dict((val, key) for key, val in enums.iteritems())
+    rev = dict((val, key) for key, val in enums.items())
     enums["rev_map"] = rev
     return type("Enum", (), enums)
 
@@ -48,6 +48,39 @@ class Query(object):
         self.db = db
         self.model = model
         self.filters = filters
+        #self._projection_query()
+
+
+    def _query(self):
+        with self.db.session_scope() as s:
+            self._get_filter_query(s)
+            res = map(lambda item : item.to_dict(), self.q)
+        return res
+
+    def _get_filter_query(self, session, projection=[]):
+        exp_list = []
+        for key, val in self.filters.items():
+            # attr error
+            exp_list.append(self._parse_exp(key, val))
+
+        if projection:
+            self.q = self._projection_query(session, projection)
+        else:
+            self.q = session.query(self.model)
+
+        for exp in exp_list:
+            self.q = self.q.filter(exp)
+
+    def _parse_exp(self, key, val):
+        try:
+            log.debug("_parse_exp key=%s, val=%s", key, val)
+            exp = getattr(self.model, key) == val
+        except AttributeError as e:
+            cf = key.split("_")[-1]
+            col_name = key.replace("_{}".format(cf), "")
+            log.debug("_parse_exp cf=%s, col_name=%s, val=%s", cf, col_name, val)
+            exp = op_map[cf](getattr(self.model, col_name), val)
+        return exp
 
     def _projection_query(self, session, proj):
         column_list = []
@@ -58,28 +91,12 @@ class Query(object):
                 raise InvalidColumnName("Invalid Column Name {}".format(item))
         return session.query(*column_list)
 
-    def _get_filter_query(self, session, projection=[]):
-        filter_list = []
-        for key, val in self.filters.items():
-            # attr error
-            filter_list.append(self.model.getattr(key) == val)
-
-        if projection:
-            q = self._projection_query(session, projection)
-        else:
-            q = session.query(self.model)
-
-        for filter in filter_list:
-            q = q.filter(filter)
-        
-        return q
-
 class DeleteQuery(Query):
     def delete(self):
         with self.db.session_scope() as s:
-            query = self._get_filter_query(s)
+            self._get_filter_query(s)
             count = 0
-            for item in query:
+            for item in self.q:
                 s.delete(item)
                 count += 1
         return count        
@@ -87,22 +104,26 @@ class DeleteQuery(Query):
 class SelectQuery(Query):
 
     projection = []
+    rs = []
 
-    def _query(self):
-        with self.db.session_scope() as s:
-            
+    def get_rs(func):
+        def warpper(*args, **kwargs):
+            if not args[0].rs:
+                args[0].rs = list(args[0]._query())
+            return func(*args, **kwargs)
+        return warpper
 
+    @get_rs
     def __len__(self):
-        pass
+        return len(self.rs)
 
-    def __getitem__(self):
-        pass
+    @get_rs
+    def __getitem__(self, item):
+        return self.rs[item]
 
-    def __getattr__(self):
-        pass
-
+    @get_rs
     def all(self):
-        pass
+        return self.rs
     
     def first(self):
         pass
@@ -110,7 +131,7 @@ class SelectQuery(Query):
     def one(self):
         pass
 
-    def limit(self):
+    def limit(self, limit):
         pass
 
     def page(self, limit, offset):
@@ -124,6 +145,8 @@ class SelectQuery(Query):
 
     def projection(self, projection):
         self.projection = projection
+
+    
 
 class UpdateQuery(Query):
 
@@ -173,8 +196,8 @@ class Dao(object):
 
 class MarketDao(Dao):
     def __init__(self, db):
-        self.model = Market
         Dao.__init__(self, db)
+        self.model = Market
 
     def insert(self, name):
         obj = Market(name)
@@ -195,8 +218,9 @@ class MarketDao(Dao):
 class CategoryDao(Dao):
 
     def __init__(self, db):
-        self.model = Category
         Dao.__init__(self, db)
+        self.model = Category
+        
 
     def insert(self, code, description):
         obj = self.model(code, description)
@@ -205,8 +229,8 @@ class CategoryDao(Dao):
 
 class CompanyDao(Dao):
     def __init__(self, db):
-        self.model = Company
         Dao.__init__(self, db)
+        self.model = Company
 
     def insert(self, name, code, category, market):
         obj = self.model(name, code, category, market)

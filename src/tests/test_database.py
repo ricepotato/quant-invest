@@ -48,8 +48,15 @@ class TestDatabase(unittest.TestCase):
         obj = mrk_dao.get_market(market)
         self.assertIsNone(obj)
 
-        rs = mrk_dao.get(name=market)
+        market = "KOSDAQ"
+        rs = mrk_dao.select(name=market)
         self.assertEqual(rs[0].name, market)
+
+        rs = mrk_dao.select(name_like="KO")
+        #log.info(rs)
+        self.assertEqual(len(rs), 2)
+        #log.info(len(rs))
+        #log.info(str(rs))
 
 
     def test_mar_dao_get(self):
