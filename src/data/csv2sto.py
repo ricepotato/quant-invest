@@ -11,6 +11,9 @@ sys.path.append(comm_path)
 
 import logger.logcfg
 from stockreder import SCReader
+from stocksto import StockDbStore
+from database.database import *
+from database.dao import *
 
 log = logging.getLogger("qi.data.csv2sto")
 
@@ -25,8 +28,30 @@ class Csv2Sto(object):
         count = self.sto.add_data(market_id, data)
         return count
 
+def make_stock_sto():
+    db = Database()
+    mrk_dao = MarketDao(db)
+    cate_dao = CategoryDao(db)
+    comp_dao = CompanyDao(db)
+    sto = StockDbStore(mrk_dao, cate_dao, comp_dao)
+    return sto
+
 def main():
-    pass
+    cur_path = os.path.dirname(__file__)
+    log.info("cur_path=%s", cur_path)
+
+    market_map = {
+        "KOSDAQ":"KOSDAQ.csv",
+        "KOSPI":"KOSPI.csv"
+    }
+
+    reader = SCReader()
+    sto = make_stock_sto()
+    c2s = Csv2Sto(reader, sto)
+    for market, filename in market_map.items():
+        data_path = os.path.join(cur_path, filename)
+        log.info("market=%s datapath=%s", market, data_path)
+        c2s.c2s(market, data_path)
 
 if __name__ == "__main__":
     main()
