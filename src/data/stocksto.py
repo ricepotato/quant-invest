@@ -29,18 +29,34 @@ class StockDbStore(StockStore):
         self.company = company_dao
 
     def add_market(self, market_name):
-        market = self.market.get_market(market_name)
-        if market is not None:
-            id = market.id
+        res = self.market.select(name=market_name).limit(1)
+        if res:
+            id = res[0].id
         else:
             id = self.market.insert(market_name)
         return id
+
+    def add_category(self, cate_code, desc):
+        res = self.category.select(code=cate_code).limit(1)
+        if res:
+            log.debug("category exist. desc=%s id=%s", desc, str(res[0].id))
+            return res[0].id
+        else:
+            category_id = self.category.insert(cate_code, desc)
+            return category_id
+
+    def add_compay(self, name, code, category_id, market_id):
+        res = self.company.select(code=code).limit(1)
+        if res:
+            log.debug("company exist. name=%s code=%s", name, code)
+        else:
+            self.company.insert(name, code, category_id, market_id)
 
     def add_data(self, market_id, data):
         for item in data:
             cate_code = item["category_code"]
             desc = item["desc"]
-            category_id = self.category.insert(cate_code, desc)
-            self.company.insert(item["name"], item["code"], 
-                                category_id, market_id)
+            cate_id = self.add_category(cate_code, desc)
+            self.add_compay(item["name"], item["code"], cate_id, market_id)
+            
             
