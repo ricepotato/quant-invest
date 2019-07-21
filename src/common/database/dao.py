@@ -48,10 +48,22 @@ class Query(object):
         self.db = db
         self.model = model
         self.filters = filters
-        #self._projection_query()
+        self.limit_val = None
+        self.count_query = False
+        self.one_query = None
+        self.offset = None
+        self.orderby = None
 
+    def _query_for_scalar(self):
+        with self.db.session_scope() as s:
+            self._get_filter_query(s)
+            if self.count_query:
+                return self.q.count()
+            elif self.one_query:
+                return self.q.one().to_dict()
+        return None
 
-    def _query(self):
+    def _query_for_list(self):
         with self.db.session_scope() as s:
             self._get_filter_query(s)
             res = map(lambda item : item.to_dict(), self.q)
@@ -70,6 +82,19 @@ class Query(object):
 
         for exp in exp_list:
             self.q = self.q.filter(exp)
+
+        if self.limit_val is not None:
+            self.q = self.q.limit(self.limit_val)
+        
+        if self.offset is not None:
+            self.q = self.q.offset(self.offset)
+
+        if self.orderby is not None:
+            for item in self.orderby:
+                for column, order in item.items():
+                    self.q = self.q.order_by(order_map[order]\
+                                             (getattr(self.model, 
+                                                      column)))
 
     def _parse_exp(self, key, val):
         try:
@@ -108,8 +133,8 @@ class SelectQuery(Query):
 
     def get_rs(func):
         def warpper(*args, **kwargs):
-            if not args[0].rs:
-                args[0].rs = list(args[0]._query())
+            if not args[0].rs: # <= self
+                args[0].rs = list(args[0]._query_for_list())
             return func(*args, **kwargs)
         return warpper
 
@@ -126,33 +151,34 @@ class SelectQuery(Query):
         return self.rs
     
     def first(self):
-        pass
+        return self.limit(1)
 
-    def one(self):
-        pass
+    def limit(self, limit, offset=0):
+        log.debug("limit=%d", limit)
+        self.limit_val = limit
+        self.offset = offset
+        return self
 
-    def limit(self, limit):
-        pass
-
-    def page(self, limit, offset):
-        pass
+    def page(self, page, per_page):
+        offset = (page - 1) * per_page
+        return {"total":self.count(), "items":self.limit(per_page, offset)}
 
     def count(self):
-        pass
+        self.count_query = True
+        return self._query_for_scalar()
 
-    def order_by(self, order):
-        pass
+    def order_by(self, order_by=[]):
+        self.orderby = order_by
+        return self
 
     def projection(self, projection):
         self.projection = projection
 
-    
-
 class UpdateQuery(Query):
 
-    def _update(self, query, **kwargs):
+    def _update(self, **kwargs):
         count = 0
-        for item in query:
+        for item in self.q:
             for key, val in kwargs.items():
                 try:
                     setattr(item, key, val)
@@ -164,8 +190,8 @@ class UpdateQuery(Query):
 
     def set(self, **kwargs):
         with self.db.session_scope() as s:
-            query = self._get_filter_query(s)
-            count = self._update(query, kwargs)
+            self._get_filter_query(s)
+            count = self._update(**kwargs)
         return count
 
 class Dao(object):
@@ -204,23 +230,10 @@ class MarketDao(Dao):
         obj = self._insert(obj)
         return obj.id
 
-    def get_market(self, name):
-        with self.db.session_scope() as s:
-            obj = s.query(Market).filter(Market.name == name).first()
-            if obj:
-                res = obj.to_dict()
-            else:
-                res = None
-
-        return res
-                
-
 class CategoryDao(Dao):
-
     def __init__(self, db):
         Dao.__init__(self, db)
-        self.model = Category
-        
+        self.model = Category        
 
     def insert(self, code, description):
         obj = self.model(code, description)
