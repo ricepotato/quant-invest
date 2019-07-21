@@ -98,12 +98,10 @@ class Query(object):
 
     def _parse_exp(self, key, val):
         try:
-            log.debug("_parse_exp key=%s, val=%s", key, val)
             exp = getattr(self.model, key) == val
         except AttributeError as e:
             cf = key.split("_")[-1]
             col_name = key.replace("_{}".format(cf), "")
-            log.debug("_parse_exp cf=%s, col_name=%s, val=%s", cf, col_name, val)
             exp = op_map[cf](getattr(self.model, col_name), val)
         return exp
 
@@ -154,7 +152,6 @@ class SelectQuery(Query):
         return self.limit(1)
 
     def limit(self, limit, offset=0):
-        log.debug("limit=%d", limit)
         self.limit_val = limit
         self.offset = offset
         return self
