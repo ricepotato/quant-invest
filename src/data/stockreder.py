@@ -3,6 +3,7 @@ import os
 import sys
 import json
 import logging
+import csv
 
 import logger.logcfg
 
@@ -17,8 +18,9 @@ class SCReader(object):
 
     def from_file(self, path):
         log.debug("reading file. path=%s", path)
-        with open(path, "rt", encoding="UTF8") as f:
-            data = f.read()
+        with open(path, "r", encoding="UTF8") as f:
+            rdr = csv.reader(f)
+            data = list(map(lambda line : line, rdr))
         return data
 
     def _validate(self, col_list):
@@ -42,9 +44,8 @@ class SCReader(object):
     def parse(self, data):
         
         res = []
-        log.debug("parsing..")
-        for line in data.split("\n"):
-            col_list = line.split(",")
+        for line in data:
+            col_list = line
             try:
                 res.append(self._get_col(col_list))
             except ValueError as e:
