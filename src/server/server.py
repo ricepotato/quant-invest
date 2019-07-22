@@ -10,6 +10,7 @@ base_path = os.path.abspath(os.path.join(cur_path, ".."))
 
 sys.path.append(base_path)
 
+from stock import Stock
 import common.logger.logcfg
 
 log = logging.getLogger('qi.server')
@@ -22,21 +23,8 @@ except ImportError as e:
 
 app = Flask(__name__)
 
-class Stock(Resource):
-    """ 주식정보 자원 """
-
-    def get(self):
-        """ get method 호출시 """
-        res = {"success":True, "msg":"stock select"}
-        return jsonify(res)
-
-    def post(self):
-        res = {"success":True, "msg":"stock insert"}
-        return jsonify(res)
-
-
 api = Api(app)
-api.add_resource(Stock, "/stock")
+api.add_resource(Stock, "/stock", "/stock/<string:market>")
 
 @app.route("/")
 def index():
