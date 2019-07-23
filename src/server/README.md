@@ -29,12 +29,19 @@ per_page = 종목 수
 
 ex)
 {
+
     "market":"KOSDAQ",
+
     "data":[
+
         {"num":1, "company_name":"네이버", "roa":15.3, "per":0.5, "roe":3.5, "pbr":6.7, "evebita":13.2, "eval_stock_price":98000, "stock_price":90000},
+
         {"num":1, "company_name":"카카오", "roa":15.3, "per":0.5, "roe":3.5, "pbr":6.7, "evebita":13.2, "eval_stock_price":98000, "stock_price":90000},
+
         {"num":1, "company_name":"안랩", "roa":15.3, "per":0.5, "roe":3.5, "pbr":6.7, "evebita":13.2, "eval_stock_price":98000, "stock_price":90000},
+
     ]
+    
 }
 
 
