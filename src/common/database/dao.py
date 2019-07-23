@@ -2,6 +2,7 @@
 import os
 import sys
 import json
+import datetime
 import logging
 
 import logger.logcfg
@@ -248,7 +249,17 @@ class CompanyDao(Dao):
         return obj.id
     
         
+class FinancialReportDao(Dao):
+    def __init__(self, db):
+        Dao.__init__(self, db)
+        self.model = FinancialReport
 
+    def insert(self, comp_id, period, per, pbr, roa, roe, evebita, marketcap, date_insert=None):
+        if date_insert is None:
+            date_insert = datetime.datetime.now()
+        obj = self.model(comp_id, period, per, pbr, roa, roe, evebita, marketcap, date_insert)
+        obj = self._insert(obj)
+        return obj.id
 
 
     

@@ -168,7 +168,7 @@ class FinancialReport(Base, Serializer):
     pbr = Column(FLOAT)
     roa = Column(FLOAT)
     roe = Column(FLOAT)
-    evebita = Column(FLOAT)
+    evebita = Column(FLOAT) # ev/evita
     marketcap = Column(Integer) # 시가총액
     date_insert = Column(DATETIME)
 
@@ -181,12 +181,19 @@ class FinancialReport(Base, Serializer):
                       'mysql_charset':'utf8', 
                       'mysql_collate':'utf8_general_ci'}
 
-    def __init__(self, comp_id):
-        self.code = comp_id
+    def __init__(self, comp_id, period, per, pbr, roa, roe, evebita, marketcap, date_insert):
+        self.comp_id = comp_id
+        self.period = period
+        self.per = per
+        self.pbr = pbr
+        self.roa = roa
+        self.roe = roe
+        self.evebita = evebita
+        self.marketcap = marketcap
+        self.date_insert = date_insert
 
     def __repr__(self):
-        return "<Stock('%d', '%d')>" % (self.id, self.comp_id)
-
+        return "<FinancialReport('%d', '%d')>" % (self.id, self.comp_id)
 
 class Singleton(type):
     """Singleton.
