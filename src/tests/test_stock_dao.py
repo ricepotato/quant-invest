@@ -12,6 +12,7 @@ sys.path.append(base_path)
 
 from common.database.database import Database
 from common.database.dao import *
+from common.database.stock_dao import *
 
 log = logging.getLogger("qi.tests.stock_dao")
 log.addHandler(logging.StreamHandler())
@@ -26,7 +27,8 @@ class TestStockDao(unittest.TestCase):
             s.query(Market).delete()
             s.query(Category).delete()
             s.query(FinancialReport).delete()
-            s.query(Company).delete()        
+            s.query(Company).delete()      
+        self.dao = StockDao(self.db)  
 
     def tearDown(self):
         pass
@@ -48,6 +50,13 @@ class TestStockDao(unittest.TestCase):
         self.assertIsNotNone(comp_id)
         fin_id = fin_dao.insert(comp_id, "2018/12", 20.34, 2.16, 9.75, 12.08, 18.03, 5538)
         self.assertIsNotNone(fin_id)
+
+        res = self.dao.get_list("KOSDAQ", "2018/12")
+        self.assertIsNotNone(res)
+        self.assertEqual(res[0]["comp_name"], "안랩")
+        self.assertEqual(res[0]["per"], 20.34)
+
+
 
 
         
