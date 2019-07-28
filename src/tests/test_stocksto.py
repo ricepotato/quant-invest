@@ -42,6 +42,9 @@ class TestStockSto(unittest.TestCase):
                                   {"num":2, "name":"name2", "code":"001002", 
                                   "category_code":"301001", "desc":u"종목"}])
 
+        res = self.store.get_company_list("KOSDAQ")
+        self.assertIsNotNone(res[0])
+        self.assertEqual(len(res), 2)
     
 if __name__ == "__main__":
     unittest.main()

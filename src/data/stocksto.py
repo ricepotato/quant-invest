@@ -45,18 +45,26 @@ class StockDbStore(StockStore):
             category_id = self.category.insert(cate_code, desc)
             return category_id
 
-    def add_compay(self, name, code, category_id, market_id):
+    def add_company(self, name, code, category_id, market_id):
         res = self.company.select(code=code).limit(1)
         if res:
             log.debug("company exist. name=%s code=%s", name, code)
         else:
             self.company.insert(name, code, category_id, market_id)
+            log.info("add company name=%s code=%s", name, code)
 
     def add_data(self, market_id, data):
         for item in data:
             cate_code = item["category_code"]
             desc = item["desc"]
             cate_id = self.add_category(cate_code, desc)
-            self.add_compay(item["name"], item["code"], cate_id, market_id)
+            self.add_company(item["name"], item["code"], cate_id, market_id)
+
+    def get_company_list(self, market_name):
+        res = self.market.select(name=market_name).first()
+        if not res:
+            return None
+        else:
+            return self.company.select(market=res[0].id).all()
             
             
