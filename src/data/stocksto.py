@@ -22,11 +22,12 @@ class StockStore(object):
 
 class StockDbStore(StockStore):
     """ 주식정보를 database 에 저장한다 """
-    def __init__(self, mrk_dao, category_dao, company_dao):
+    def __init__(self, mrk_dao, category_dao, company_dao, fr_dao):
         #self.db = db
         self.market = mrk_dao
         self.category = category_dao
         self.company = company_dao
+        self.fr = fr_dao
 
     def add_market(self, market_name):
         res = self.market.select(name=market_name).limit(1)
@@ -66,5 +67,13 @@ class StockDbStore(StockStore):
             return None
         else:
             return self.company.select(market=res[0].id).all()
-            
+    
+    def add_fr(self, comp_id, period, fr_dict):
+        per = fr_dict.get("per", None)
+        pbr = fr_dict.get("pbr", None)
+        roa = fr_dict.get("roa", None)
+        roe = fr_dict.get("roe", None)
+        evebita = fr_dict.get("evebita", None)
+        marketcap = fr_dict.get("marketcap", None)
+        return self.fr.insert(comp_id, period, per, pbr, roa, roe, evebita, marketcap)
             

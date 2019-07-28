@@ -13,7 +13,7 @@ sys.path.append(comm_path)
 
 from stocksto import StockDbStore
 from logger.logcfg import LogCfg
-from database.dao import MarketDao, CategoryDao, CompanyDao
+from database.dao import MarketDao, CategoryDao, CompanyDao, FinancialReportDao as FRDao
 from database.database import Database
 
 log = logging.getLogger("qi.tests.stocksto")
@@ -29,7 +29,8 @@ class TestStockSto(unittest.TestCase):
         market_dao = MarketDao(db)
         category_dao = CategoryDao(db)
         compay_dao = CompanyDao(db)
-        self.store = StockDbStore(market_dao, category_dao, compay_dao)
+        fr_dao = FRDao(db)
+        self.store = StockDbStore(market_dao, category_dao, compay_dao, fr_dao)
 
     def tearDown(self):
         log.info("tearDown")
@@ -45,6 +46,10 @@ class TestStockSto(unittest.TestCase):
         res = self.store.get_company_list("KOSDAQ")
         self.assertIsNotNone(res[0])
         self.assertEqual(len(res), 2)
+
+        fr_dict = {"roa":1, "roe":0.3, "per":17.8, "pbr":12, "evebita":33, "market_cap":1000}
+
+        self.store.add_fr(res[0].id, "2018/12", fr_dict)
     
 if __name__ == "__main__":
     unittest.main()
