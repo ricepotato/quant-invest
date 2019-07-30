@@ -15,19 +15,29 @@ import common.logger.logcfg
 log = logging.getLogger('qi.server.stock')
 
 try:
-    from flask import Flask, jsonify
-    from flask_restful import Resource, Api
+    from flask import jsonify
+    from flask_restful import Resource, reqparse
 except ImportError as e:
     log.error("import error. install flask 'pip install flask'")
 
 class Stock(Resource):
     """ 주식정보 자원 """
+    def __init__(self, **kwargs):
+        self.stock_data = kwargs["st_data"]
 
     def get(self, market=None):
         """ get method 호출시 """
-        res = {"success":True, "msg":"stock select", "market":market}
+        args = self._parse_req()        
+        res = {"stock":self.stock_data.get_data(market, args), "market":market}
         return jsonify(res)
 
-    def post(self):
-        res = {"success":True, "msg":"stock insert"}
-        return jsonify(res)
+    def _parse_req(self):
+        parser = reqparse.RequestParser()
+
+        parser.add_argument("min_roa", type=float)
+        parser.add_argument("min_per", type=float)
+        parser.add_argument("min_mrkcap", type=int)
+        parser.add_argument("limit", type=int)
+        args = parser.parse_args()
+        return args
+        
