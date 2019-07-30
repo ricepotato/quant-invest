@@ -30,7 +30,7 @@ class StockDao(object):
     def __init__(self, db):
         self.db = db
 
-    def get_list(self, market, period):
+    def get_list(self, market, period, params={}):
         with self.db.session_scope() as s:
             obj = s.query(Market).filter(Market.name==market).first()
             if not obj:
