@@ -19,12 +19,14 @@ class FrCollector(object):
     def __init__(self, store, fr_data):
         self.store = store
         self.fr_data = fr_data
-        self.period_list = self._make_period_list()
+        self.period_list = list(self._make_period_list())
 
     def _make_period_list(self):
         now = datetime.datetime.now()
         year = now.year
-        self.period_list = map(lambda idx : "{}/12".format(year - idx), range(1, 4))
+        period_list = map(lambda idx : "{}/12".format(year - idx), 
+                          range(1, 4))
+        return period_list
 
     def collect(self, market_name):
         res = self.store.get_company_list(market_name)
