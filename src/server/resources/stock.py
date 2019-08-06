@@ -10,15 +10,11 @@ base_path = os.path.abspath(os.path.join(cur_path, ".."))
 
 sys.path.append(base_path)
 
-import common.logger.logcfg
+log = logging.getLogger('qi.server.resource.stock')
 
-log = logging.getLogger('qi.server.stock')
 
-try:
-    from flask import jsonify
-    from flask_restful import Resource, reqparse
-except ImportError as e:
-    log.error("import error. install flask 'pip install flask'")
+from flask import jsonify
+from flask_restful import Resource, reqparse
 
 class Stock(Resource):
     """ 주식정보 자원 """
@@ -33,7 +29,6 @@ class Stock(Resource):
 
     def _parse_req(self):
         parser = reqparse.RequestParser()
-
         parser.add_argument("min_roa", type=float)
         parser.add_argument("min_per", type=float)
         parser.add_argument("min_mrkcap", type=int)

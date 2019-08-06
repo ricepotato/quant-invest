@@ -10,38 +10,35 @@ base_path = os.path.abspath(os.path.join(cur_path, ".."))
 
 sys.path.append(base_path)
 
-from stock import Stock
-import common.logger.logcfg
+log = logging.getLogger('qi.server.server')
 
-log = logging.getLogger('qi.server')
+from flask import Flask, jsonify, got_request_exception, request
+from flask_restful import Resource, Api
+from exc import *
 
-try:
-    from flask import Flask, jsonify
-    from flask_restful import Resource, Api
-except ImportError as e:
-    log.error("import error. install flask 'pip install flask'")
+class APIServer(object):
+    def __init__(self):
+        self.app = Flask(__name__)
+        self.errors = {
+            "NoContent":{
+                "message":"No Content",
+                "status":204
+            },
+            "BadRequest":{
+                "message":"Bad Request",
+                "status":400
+            }
+        }
 
-app = Flask(__name__)
+        self.api = Api(self.app, errors=self.errors, catch_all_404s=True)
+        got_request_exception.connect(self._log_exception, self.app)
 
-api = Api(app)
-api.add_resource(Stock, "/stock", "/stock/<string:market>")
+    def run(self, port=8080, host="0.0.0.0", debug=False):
+        self.app.run(port=port, host=host, debug=debug)
 
-@app.route("/")
-def index():
-    res = {"success":True, "msg":"hello world"}
-    return jsonify(res)
+    def add_resource(self, *args, **kwargs):
+        self.api.add_resource(*args, **kwargs)
 
-@app.route("/hello")
-def hello():
-    return "Hello World!"
-
-@app.route("/members")
-def members():
-    return "Members"
-
-@app.route("/members/<string:name>/")
-def getMember(name):
-    return name
-
-if __name__ == "__main__":
-    app.run(port=8080, host="0.0.0.0", debug=True)
+    def _log_exception(self, sender, exception, **extra):
+        log.exception("exception=%s, method=%s, url=%s, values=%s",
+                        exception, request.method, request.url, request.values)
