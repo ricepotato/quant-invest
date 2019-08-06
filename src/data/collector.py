@@ -33,11 +33,14 @@ class FrCollector(object):
 
         for company in res:
             for period in self.period_list:
-                fr_item = self.fr_data.get_data(company.code, period)
-                if not fr_item:
-                    log.warning("fr_item not exist. comp_code=%s, period=%s", 
-                                company.code, period)
-                    continue
-                self.store.add_fr(company.id, period, fr_item)
+                self.store_data(company, period)
+
+    def store_data(self, company, period):
+        fr_item = self.fr_data.get_data(company.code, period)
+        if not fr_item:
+            log.warning("fr_item not exist. comp_code=%s, period=%s", 
+                        company.code, period)
+            return None
+        self.store.add_fr(company.id, period, fr_item)
 
     
