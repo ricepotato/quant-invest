@@ -2,7 +2,16 @@
 import sys
 import importlib
 
-from exc import *
+from .exc import *
+
+def handle_invalid_init_args(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func
+        except TypeError as e:
+            raise InvalidInitArgs()
+
+    return wrapper
 
 class AppContext(object):
     def __init__(self, ctx):
@@ -63,6 +72,7 @@ class AppContext(object):
             setattr(inst, key, val)
         return inst
 
+    @handle_invalid_init_args
     def create_instance(self, cls, args, kwargs):
         if args and kwargs:
             return cls(*args, **kwargs)

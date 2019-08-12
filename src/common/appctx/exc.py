@@ -10,3 +10,6 @@ class InvalidArgObjType(AppContextError):
 
 class InvalidModulePath(AppContextError):
     pass
+
+class InvalidInitArgs(AppContextError):
+    pass
