@@ -7,7 +7,7 @@ from .exc import *
 def handle_invalid_init_args(func):
     def wrapper(*args, **kwargs):
         try:
-            return func
+            return func(*args, **kwargs)
         except TypeError as e:
             raise InvalidInitArgs()
 

@@ -8,9 +8,10 @@ cur_path = os.path.dirname(__file__)
 comm_path = os.path.join(cur_path, "..", "common")
 base_path = os.path.join(comm_path, "appctx")
 
-sys.path.append(base_path)
-from exc import *
+sys.path.append(comm_path)
+
 from appctx import AppContext
+from appctx.exc import *
 from ctx_test.some import SomeObj
 
 log = logging.getLogger("qi.tests.appctx")
