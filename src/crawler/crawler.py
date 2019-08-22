@@ -58,7 +58,7 @@ class CompGuideCrawler(object):
         
         return res
 
-    def get_fr_data(self, comp_code, period):
+    def get_fr_data(self, comp_code):
         """ 종목코드 입력 시 roe, roa, per, pbr 값을 가져와 return 한다.
         return 값의 period 는 
         @param comp_com : str
@@ -69,9 +69,3 @@ class CompGuideCrawler(object):
         text = self._get_text_from_url(url)
         res = self._parse_page(text)
         return res
-
-def main():
-    log.info("hello world")
-
-if __name__ == "__main__":
-    main()
