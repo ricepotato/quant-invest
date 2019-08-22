@@ -9,7 +9,6 @@ comm_path = os.path.join(cur_path, "..")
 sys.path.append(comm_path)
 
 from database.database import *
-import logger.logcfg
 
 log = logging.getLogger("qi.common.database.stock_dao")
 

@@ -5,10 +5,7 @@ import json
 import logging
 import csv
 
-import logger.logcfg
-
 log = logging.getLogger("qi.data.reader")
-
 
 class SCReader(object):
     """ Stock csv reader 

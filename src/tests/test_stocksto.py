@@ -12,7 +12,6 @@ sys.path.append(base_path)
 sys.path.append(comm_path)
 
 from stocksto import StockDbStore
-from logger.logcfg import LogCfg
 from database.dao import MarketDao, CategoryDao, CompanyDao, FinancialReportDao as FRDao
 from database.database import Database
 

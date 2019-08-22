@@ -5,8 +5,6 @@ import json
 import datetime
 import logging
 
-import logger.logcfg
-
 log = logging.getLogger("qi.common.database.dao")
 
 from database.database import *

@@ -14,7 +14,6 @@ sys.path.append(base_path)
 sys.path.append(comm_path)
 
 from collector import FrCollector
-from logger.logcfg import LogCfg
 
 log = logging.getLogger("qi.tests.collector")
 

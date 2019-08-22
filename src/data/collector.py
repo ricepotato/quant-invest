@@ -9,8 +9,6 @@ comm_path = os.path.abspath(os.path.join(cur_path, "..", "common"))
 
 sys.path.append(comm_path)
 
-import logger.logcfg
-
 log = logging.getLogger("qi.data.collector")
 
 class FrCollector(object):

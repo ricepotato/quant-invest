@@ -5,28 +5,26 @@ import unittest
 import logging
 
 cur_path = os.path.dirname(__file__)
-base_path = os.path.join(cur_path, "..", "crawler")
-comm_path = os.path.join(cur_path, "..", "common")
+base_path = os.path.abspath(os.path.join(cur_path, ".."))
 
 sys.path.append(base_path)
-sys.path.append(comm_path)
 
-from crawler import Crawler
-from common.logger.logger import LogCfg
+from crwaler import CompGuideCrawler
 
 log = logging.getLogger("qi.tests.crawler")
 
 class TestCrawler(unittest.TestCase):
     def setUp(self):
-        log.info("setUp")
-        self.crawler = Crawler()
+        pass
+        self.crawler = CompGuideCrawler()
 
     def tearDown(self):
-        log.info("tearDown")
+        pass
 
     def test_crawler(self):
-        log.info("crawler")
-        self.crawler.start()
+        comp_code = "053800"
+        
+        self.crawler.get_fr_data()
 
 
 if __name__ == "__main__":
