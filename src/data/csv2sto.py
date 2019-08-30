@@ -33,7 +33,7 @@ def make_stock_sto():
     mrk_dao = MarketDao(db)
     cate_dao = CategoryDao(db)
     comp_dao = CompanyDao(db)
-    sto = StockDbStore(mrk_dao, cate_dao, comp_dao)
+    sto = StockDbStore(mrk_dao, cate_dao, comp_dao, None)
     return sto
 
 def main():
