@@ -1,6 +1,9 @@
 #-*- coding: utf-8 -*-
+import logging
 
 from abc import ABCMeta, abstractmethod
+
+log = logging.getLogger("qi.data.compfrdat")
 
 class CompanyFrData(metaclass=ABCMeta):
 
@@ -14,8 +17,11 @@ class CompanyGuideFrData(CompanyFrData):
 
     def __init__(self, crawler):
         self.crawler = crawler
+        self.data = {}
 
-    def get_data(self, comp_code, period):
-        data = self.crawler.get_data(comp_code, period)
-        # {"comp_code":comp_code, "period":"2018/12", "roe":0, "roa":0, "per":0, "pbr":0}
-        return data
+    def get_data(self, comp_code):
+        if self.data.get(comp_code, None) is None:
+            fr_data = self.crawler.get_fr_data(comp_code)
+            self.data[comp_code] = fr_data
+
+        return self.data[comp_code]

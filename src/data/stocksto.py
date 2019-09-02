@@ -4,8 +4,6 @@ import sys
 import json
 import logging
 
-import logger.logcfg
-
 log = logging.getLogger("qi.data.store")
 
 class StockStore(object):
@@ -68,12 +66,27 @@ class StockDbStore(StockStore):
         else:
             return self.company.select(market=res[0].id).all()
     
+    def get_fr(self, comp_id, period):
+        res = self.fr.select(comp_id=comp_id, period=period).limit(1)
+        if res:
+            return res[0]
+        else:
+            return None
+
     def add_fr(self, comp_id, period, fr_dict):
-        per = fr_dict.get("per", None)
-        pbr = fr_dict.get("pbr", None)
-        roa = fr_dict.get("roa", None)
-        roe = fr_dict.get("roe", None)
+        per = self._to_float(fr_dict.get("per", None))
+        pbr = self._to_float(fr_dict.get("pbr", None))
+        roa = self._to_float(fr_dict.get("roa", None))
+        roe = self._to_float(fr_dict.get("roe", None))
         evebita = fr_dict.get("evebita", None)
         marketcap = fr_dict.get("marketcap", None)
         return self.fr.insert(comp_id, period, per, pbr, roa, roe, evebita, marketcap)
+    
+    def _to_float(self, val):
+        try:
+            val = val.replace(",", "")
+            return float(val)
+        except ValueError as e:
+            log.warning("_to_float value error. %s", val)
+            return None
             
