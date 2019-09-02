@@ -168,6 +168,7 @@ class FinancialReport(Base, Serializer):
     marketcap = Column(Integer) # 시가총액
     date_insert = Column(DATETIME)
 
+    UniqueConstraint(comp_id, period, name="unique_comp_id_period")
     Index("per_idx", per)
     Index("pbr_idx", pbr)
     Index("roa_idx", roa)
