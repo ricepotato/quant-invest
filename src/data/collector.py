@@ -36,22 +36,22 @@ class FrCollector(object):
         res = self.store.get_company_list(market_name)
 
         for company in res:
-            for period in self.period_list:
-                self.store_data(company, period)
+            cnt = self.store_data(company)
+            if cnt > 0:
                 log.info("add fr company=%s", str(company.code))
 
     @handle_exception
-    def store_data(self, company, period):
-        fr_obj = self.store.get_fr(company.id, period)
-        if fr_obj:
-            log.warning("fr data already exist. %s", str(company.code))
-            return None
+    def store_data(self, company):
         fr_res = self.fr_data.get_data(company.code)
         if not fr_res:
             log.warning("fr_item not exist. comp_code=%s, period=%s", 
                         company.code, period)
             return None
 
+        cnt = 0
         for period, fr_item in fr_res.items():
-            self.store.add_fr(company.id, period, fr_item)
+            res = self.store.add_fr(company.id, period, fr_item)
+            if res is not None:
+                cnt += 1
+        return cnt
 

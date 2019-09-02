@@ -80,7 +80,11 @@ class StockDbStore(StockStore):
         roe = self._to_float(fr_dict.get("roe", None))
         evebita = fr_dict.get("evebita", None)
         marketcap = fr_dict.get("marketcap", None)
-        return self.fr.insert(comp_id, period, per, pbr, roa, roe, evebita, marketcap)
+        try:
+            return self.fr.insert(comp_id, period, per, pbr, roa, roe, evebita, marketcap)
+        except Exception as e:
+            log.warning("insert failed. comp_id=%s, period=%s, %s",comp_id, period, e)
+            return None
     
     def _to_float(self, val):
         try:
