@@ -13,16 +13,12 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.inspection import inspect
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
-
 cur_path = os.path.dirname(__file__)
 comm_path = os.path.join(cur_path, "..")
 
 sys.path.append(comm_path)
 
-import logger.logcfg
-
 log = logging.getLogger("qi.common.database")
-log.setLevel(logging.DEBUG)
 
 def get_conf(conf_path=None):
     """ json 설정 파일을 읽어온다.

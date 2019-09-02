@@ -7,7 +7,7 @@ import logging
 
 log = logging.getLogger("qi.common.database.dao")
 
-from database.database import *
+from .database import *
 
 class DatabaseError(Exception):
     pass
