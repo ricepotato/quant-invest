@@ -18,7 +18,6 @@ log = logging.getLogger("qi.tests.crawler")
 
 class TestCrawler(unittest.TestCase):
     def setUp(self):
-        pass
         self.crawler = CompGuideCrawler()
 
     def tearDown(self):
@@ -40,7 +39,7 @@ class TestCrawler(unittest.TestCase):
         self.assertEqual(res["period"], period)
         #self.assertEqual(res["roa"], 9.75)
 
-    def test_parse_page(self):
+    def _test_parse_page(self):
         comp_code = "053800"
         text = self._get_text(comp_code)
         res = self.crawler._parse_page(text)
@@ -53,6 +52,10 @@ class TestCrawler(unittest.TestCase):
         text = self._get_text(comp_code)
         res = self.crawler._parse_page(text)
         self.assertEqual(res["2018-12"]["per"], "N/A")
+
+    def test_crawler(self):
+        fr_data = self.crawler.get_fr_data("053800")
+        log.info(fr_data)
 
 if __name__ == "__main__":
     unittest.main()

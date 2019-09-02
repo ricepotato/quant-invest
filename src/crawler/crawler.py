@@ -6,6 +6,8 @@ import logging
 from bs4 import BeautifulSoup as BS
 import requests
 
+from .reader import FileReader
+
 log = logging.getLogger("qi.crawler.crawler")
 
 class CompGuideCrawler(object):
@@ -15,6 +17,11 @@ class CompGuideCrawler(object):
     def __init__(self):
         self.url = url = "http://comp.fnguide.com/SVO2/asp/SVD_Main.asp?pGB=1&gicode=A{}"
         self.text = None
+        self.reader = FileReader()
+
+    def _get_text_by_id(self, comp_id):
+        text = self.reader.read_text(comp_id)
+        return text
     
     def _get_text_from_url(self, url):
         log.debug("getting text from url. url=%s", url)
@@ -65,7 +72,9 @@ class CompGuideCrawler(object):
         @return : dict
         """
 
-        url = self._get_url(comp_code)
-        text = self._get_text_from_url(url)
+        #url = self._get_url(comp_code)
+        #text = self._get_text_from_url(url)
+        log.info("getting fr data comp_code=%s", comp_code)
+        text = self._get_text_by_id(comp_code)
         res = self._parse_page(text)
         return res
