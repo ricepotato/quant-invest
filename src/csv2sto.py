@@ -4,16 +4,10 @@ import sys
 import json
 import logging
 
-cur_path = os.path.dirname(__file__)
-comm_path = os.path.abspath(os.path.join(cur_path, "..", "common"))
-
-sys.path.append(comm_path)
-
-import logger.logcfg
-from stockreder import SCReader
-from stocksto import StockDbStore
-from database.database import *
-from database.dao import *
+import common.logger.logcfg
+from data.stockreder import SCReader
+from data.stocksto import StockDbStore
+from common.database import *
 
 log = logging.getLogger("qi.data.csv2sto")
 
@@ -49,7 +43,7 @@ def main():
     sto = make_stock_sto()
     c2s = Csv2Sto(reader, sto)
     for market, filename in market_map.items():
-        data_path = os.path.join(cur_path, filename)
+        data_path = os.path.join(cur_path, "data", filename)
         log.info("market=%s datapath=%s", market, data_path)
         c2s.c2s(market, data_path)
 
