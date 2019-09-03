@@ -6,32 +6,21 @@ import logging
 from bs4 import BeautifulSoup as BS
 import requests
 
-from .reader import FileReader
+from .reader import CompFileReader
 
 log = logging.getLogger("qi.crawler.crawler")
 
 class CompGuideCrawler(object):
     """ company guide crawler 
-    company guide site 에 방문하여 financial report data 를 가져온다.
+    company guide site text parsing
     """
     def __init__(self):
-        self.url = url = "http://comp.fnguide.com/SVO2/asp/SVD_Main.asp?pGB=1&gicode=A{}"
         self.text = None
-        self.reader = FileReader()
+        self.reader = CompFileReader()
 
     def _get_text_by_id(self, comp_id):
         text = self.reader.read_text(comp_id)
         return text
-    
-    def _get_text_from_url(self, url):
-        log.debug("getting text from url. url=%s", url)
-        r = requests.get(url)
-        self.text = r.text
-        return r.text
-
-    def _get_url(self, gicode):
-        url = self.url.format(gicode)
-        return url
     
     def _get_text_from_selector(self, bs, selector):
         log.debug("getting text from selector. sel=%s", selector)

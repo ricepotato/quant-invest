@@ -31,7 +31,7 @@ class CompGuideDownloader:
 
     def _get_file_req(self, comp_id):
         log.debug("preparing file download.. comp_id=%s", comp_id)
-        filepath = os.path.join(self.path, comp_id)
+        filepath = os.path.join(self.path, f"{comp_id}.html")
         url = self.base_url.format(comp_id)
         return self._download(url, filepath)
         

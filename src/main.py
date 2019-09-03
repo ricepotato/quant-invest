@@ -4,7 +4,6 @@ import logging
 
 from common.logger import LogCfg
 from common.appctx import AppContext
-from data import FrCollector
 
 log = logging.getLogger("qi.main")
 log.setLevel(logging.DEBUG)
@@ -59,6 +58,7 @@ def main():
     log.info("main run")
     collector = app_ctx.get_bean("collector")
     collector.collect("KOSPI")
+    collector.collect("KOSDAQ")
 
 if __name__ == "__main__":
     main()
