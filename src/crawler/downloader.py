@@ -13,7 +13,7 @@ class CompGuideDownloader:
     def __init__(self):
         self.base_url = "http://comp.fnguide.com/SVO2/asp/SVD_Main.asp?pGB=1&gicode=A{}"
         self.path = self._downlad_path()
-        self.processes = 2
+        self.processes = 5
 
     def _downlad_path(self):
         cur_path = os.path.dirname(__file__)
