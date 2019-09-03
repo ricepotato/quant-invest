@@ -1,2 +1,3 @@
 *.pyc
 *.sqlite3
+src/crawler/comp_guide_html/*
