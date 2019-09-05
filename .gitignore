@@ -1,3 +1,4 @@
 *.pyc
 *.sqlite3
 src/crawler/comp_guide_html/*
+src/crawler/comp_guide_json/*
