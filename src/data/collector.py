@@ -44,7 +44,8 @@ class FrCollector(object):
             return None
 
         cnt = 0
-        for period, fr_item in fr_res.items():
+        period_dict = fr_res["period"]
+        for period, fr_item in period_dict.items():
             res = self.store.add_fr(company.id, period, fr_item)
             if res is not None:
                 cnt += 1

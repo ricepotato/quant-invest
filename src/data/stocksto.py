@@ -74,10 +74,10 @@ class StockDbStore(StockStore):
             return None
 
     def add_fr(self, comp_id, period, fr_dict):
-        per = self._to_float(fr_dict.get("per", None))
-        pbr = self._to_float(fr_dict.get("pbr", None))
-        roa = self._to_float(fr_dict.get("roa", None))
-        roe = self._to_float(fr_dict.get("roe", None))
+        per = fr_dict.get("per", None)
+        pbr = fr_dict.get("pbr", None)
+        roa = fr_dict.get("roa", None)
+        roe = fr_dict.get("roe", None)
         evebita = fr_dict.get("evebita", None)
         marketcap = fr_dict.get("marketcap", None)
         try:
@@ -85,14 +85,3 @@ class StockDbStore(StockStore):
         except Exception as e:
             log.debug("insert failed. comp_id=%s, period=%s, %s",comp_id, period, e)
             return None
-    
-    def _to_float(self, val):
-        try:
-            if val == "N/A" or val == "":
-                return None
-            val = val.replace(",", "")
-            return float(val)
-        except ValueError as e:
-            log.warning("_to_float value error. %s", val)
-            return None
-            
