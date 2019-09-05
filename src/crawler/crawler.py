@@ -36,6 +36,7 @@ class CompGuideCrawler(object):
         #pbr = "#highlight_D_A > table > tbody > tr:nth-child(22) > td:nth-child(2)"
 
         res = {}
+        res["period"] = {}
         sel_mrk = "#svdMainGrid1 > table > tbody > tr:nth-child(4) > td:nth-child(2)"
         #svdMainGrid1 > table > tbody > tr:nth-child(4) > td:nth-child(2)
         #svdMainGrid1 > table > tbody > tr:nth-child(5) > td:nth-child(2)
@@ -54,8 +55,8 @@ class CompGuideCrawler(object):
             per = self._str_to_float(self._get_text_from_selector(bs, sel_per))
             pbr = self._str_to_float(self._get_text_from_selector(bs, sel_pbr))
             period = period.replace("/", "-")
-            res[period] = {"roa":roa, "roe":roe, "per":per, "pbr":pbr}
-            log.debug("getting data. period=%s, data=%s", period, res[period])
+            res["period"][period] = {"roa":roa, "roe":roe, "per":per, "pbr":pbr}
+            log.debug("getting data. period=%s, data=%s", period, res["period"][period])
         
         return res
 
@@ -77,7 +78,7 @@ class CompGuideCrawler(object):
 
         try:
             return float(src)
-        except TypeError as e:
+        except ValueError as e:
             log.warning("type error. %s", e)
             return None
 
