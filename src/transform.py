@@ -4,6 +4,7 @@ import logging
 
 from common.logger import LogCfg
 from common.appctx import AppContext
+from multiprocessing import Pool
 
 log = logging.getLogger("qi.transform")
 log.setLevel(logging.DEBUG)
@@ -60,6 +61,10 @@ ctx = {
 
 app_ctx = AppContext(ctx)
 
+def transform_run(comp_code):
+    transform = app_ctx.get_bean("transform")
+    transform.transfrom(comp_code)
+
 def main():
     log.info("transform run")
     transform = app_ctx.get_bean("transform")
@@ -69,10 +74,14 @@ def main():
     code_list = list(map(lambda item: item["code"], res))
     cnt = 0
     total = len(code_list)
-    for code in code_list:
-        log.info("trasnform code=%s (%d/%d)", code, cnt, total)
-        cnt += 1
-        transform.transfrom(code)
+    with Pool(20) as p:
+        #res = p.map(self._get_file_req, comp_ids)
+        p.map(transform_run, code_list)
+
+    #for code in code_list:
+    #    log.info("trasnform code=%s (%d/%d)", code, cnt, total)
+    #    cnt += 1
+    #    transform.transfrom(code)
 
 if __name__ == "__main__":
     main()
