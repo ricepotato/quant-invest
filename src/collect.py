@@ -45,10 +45,16 @@ ctx = {
         "class":"data.CompanyGuideFrData",
         "init_args":[
             {"bean":"crawler"}
-        ]
+        ],
+        "properties":{
+            "json_reader":{"bean":"json_reader"}
+        }
     },
     "crawler":{
         "class":"crawler.CompGuideCrawler"
+    },
+    "json_reader":{
+        "class":"crawler.reader.CompJsonReader"
     }
 }
 
