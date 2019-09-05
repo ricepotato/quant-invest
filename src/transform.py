@@ -75,13 +75,9 @@ def main():
     cnt = 0
     total = len(code_list)
     with Pool(20) as p:
-        #res = p.map(self._get_file_req, comp_ids)
         p.map(transform_run, code_list)
 
-    #for code in code_list:
-    #    log.info("trasnform code=%s (%d/%d)", code, cnt, total)
-    #    cnt += 1
-    #    transform.transfrom(code)
+    #transform_run("263020")
 
 if __name__ == "__main__":
     main()
