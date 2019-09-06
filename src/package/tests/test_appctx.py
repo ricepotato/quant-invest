@@ -3,8 +3,8 @@ import os
 import logging
 import unittest
 
-from appctx import AppContext
-from appctx.exc import *
+from qi.appctx import AppContext
+from qi.appctx.exc import *
 from ctx_test.some import SomeObj
 
 log = logging.getLogger("qi.tests.appctx")
