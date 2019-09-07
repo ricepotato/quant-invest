@@ -13,9 +13,20 @@ class CompFileReader:
 
     def read_text(self, comp_code):
         txt_path = os.path.join(self.data_path, f"{comp_code}.html")
-        with open(txt_path, "r") as f:
-            text = f.read()
+        with open(txt_path, "rb") as f:
+            data = f.read()
+        text = self._try_decode(data)
         return text
+
+    def _try_decode(self, data):
+        encodings = ["utf-8", "ascii", "ansi", "utf-16"]
+        for encoding in encodings:
+            try:
+                text = data.decode(encoding)
+                return text
+            except UnicodeDecodeError as e:
+                log.warning("decode error. %s", e)
+        raise UnicodeDecodeError("file reader decode error.")
 
 class CompJsonReader:
     def __init__(self):
