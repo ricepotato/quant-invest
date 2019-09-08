@@ -46,7 +46,7 @@ class CompGuideCrawler(object):
             sel_period = f"#highlight_D_Y > table > thead > tr.td_gapcolor2 > th:nth-child({idx})"
             sel_roa = f"#highlight_D_Y > table > tbody > tr:nth-child(16) > td:nth-child({idx+1})"
             sel_roe = f"#highlight_D_Y > table > tbody > tr:nth-child(17) > td:nth-child({idx+1})"
-            sel_per = f"#highlight_D_Y > table > tbody > tr:nth-child(22) > td:nth-child({idx+1})"
+            sel_per = f"#highlight_D_Y > table > tbody > tr:nth-child(21) > td:nth-child({idx+1})"
             sel_pbr = f"#highlight_D_Y > table > tbody > tr:nth-child(22) > td:nth-child({idx+1})"
             
             period = self._get_text_from_selector(bs, sel_period)
