@@ -85,3 +85,8 @@ class StockDbStore(StockStore):
         except Exception as e:
             log.debug("insert failed. comp_id=%s, period=%s, %s",comp_id, period, e)
             return None
+
+    def update_company(self, comp_id, market_cap):
+        return self.company.update(id=comp_id).set(market_cap=market_cap)
+
+

@@ -133,21 +133,24 @@ class Company(Base, Serializer):
     name = Column(String(50)) # 종목명
     code = Column(String(20)) # 종목 코드
     category = Column(Integer, ForeignKey("category.id", ondelete="CASCADE", onupdate="CASCADE"))
+    market_cap = Column(Integer)
     market = Column(Integer, ForeignKey("market.id", ondelete="CASCADE", onupdate="CASCADE"))
+    
 
     UniqueConstraint(name, code, name="unique_name")
-    #UniqueConstraint(code, name="unique_code")
-    #Index("name_idx", name)
-    #Index("code_idx", code)
+    Index("market_cap_idx", market_cap)
+    Index("market_idx", market)
+    Index("code_idx", code)
 
     __table_args__ = {'mysql_engine':'InnoDB', 
                       'mysql_charset':'utf8', 
                       'mysql_collate':'utf8_general_ci'}
 
-    def __init__(self, name, code, category, market):
+    def __init__(self, name, code, category, market_cap, market):
         self.name = name
         self.code = code
         self.category = category
+        self.market_cap = market_cap
         self.market = market
 
     def __repr__(self):
@@ -173,6 +176,7 @@ class FinancialReport(Base, Serializer):
     Index("pbr_idx", pbr)
     Index("roa_idx", roa)
     Index("roe_idx", roe)
+    Index("period_idx", period)
 
     __table_args__ = {'mysql_engine':'InnoDB', 
                       'mysql_charset':'utf8', 

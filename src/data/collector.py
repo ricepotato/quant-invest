@@ -45,6 +45,7 @@ class FrCollector(object):
 
         cnt = 0
         period_dict = fr_res["period"]
+        self.store.update_company(company.id, fr_res["market_cap"])
         for period, fr_item in period_dict.items():
             res = self.store.add_fr(company.id, period, fr_item)
             if res is not None:
