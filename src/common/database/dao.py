@@ -241,8 +241,8 @@ class CompanyDao(Dao):
         Dao.__init__(self, db)
         self.model = Company
 
-    def insert(self, name, code, category, market):
-        obj = self.model(name, code, category, market)
+    def insert(self, name, code, category, market, market_cap=None):
+        obj = self.model(name, code, category, market_cap, market)
         obj = self._insert(obj)
         return obj.id
     
