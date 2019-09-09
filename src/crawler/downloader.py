@@ -13,7 +13,7 @@ class CompGuideDownloader:
     def __init__(self):
         self.base_url = "http://comp.fnguide.com/SVO2/asp/SVD_Main.asp?pGB=1&gicode=A{}"
         self.path = self._downlad_path()
-        self.processes = 5
+        self.processes = 10
 
     def _downlad_path(self):
         cur_path = os.path.dirname(__file__)
@@ -42,7 +42,7 @@ class CompGuideDownloader:
         
         log.debug("request file... url=%s", url)
         res = requests.get(url)
-        with open(filepath, "w") as f:
-            f.write(res.text)
+        with open(filepath, "wb") as f:
+            f.write(res.content)
         log.debug("download complete. filepath=%s", filepath)
         return filepath
