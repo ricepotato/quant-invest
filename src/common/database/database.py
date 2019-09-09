@@ -153,7 +153,6 @@ class Company(Base, Serializer):
     def __repr__(self):
         return "<Stock('%s', '%s')>" % (self.name, self.code)
 
-
 class FinancialReport(Base, Serializer):
     __tablename__ = "fr"
 
@@ -191,6 +190,30 @@ class FinancialReport(Base, Serializer):
 
     def __repr__(self):
         return "<FinancialReport('%d', '%d')>" % (self.id, self.comp_id)
+
+class Price(Base, Serializer):
+    id = Column(Integer, primary_key=True) # pkey
+    code = Column(String(20)) # 종목 코드
+    date = Column(String(10), nullable=False)
+    open = Column(FLOAT) # 시가
+    high = Column(FLOAT) # 고가
+    low = Column(FLOAT) # 저가
+    close = Column(FLOAT) # 종가
+    volume = Colum(FLOAT) # 거래량
+    change = Colum(FLOAT) # 등락
+
+    def __init__(self, code, date, open, high, low, close, volume, change):
+        self.code
+        self.date = date
+        self.open = open
+        self.high = high
+        self.low = low
+        self.close = close
+        self.volume = volume
+        self.change = change
+
+    def __repr__(self):
+        return "<Price('%s', '%s')>" % (self.code, str(self.close))
 
 class Singleton(type):
     """Singleton.

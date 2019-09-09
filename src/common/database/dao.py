@@ -259,5 +259,14 @@ class FinancialReportDao(Dao):
         obj = self._insert(obj)
         return obj.id
 
+class PriceDao(Dao):
+    def __init__(self, db):
+        Dao.__init__(self, db)
+        self.model = Price
+
+    def insert(self, code, date, open, high, low, close, volume, change):
+        obj = self.model(code, date, open, high, low, close, volume, change)
+        obj = self._insert(obj)
+        return obj.id
 
     
