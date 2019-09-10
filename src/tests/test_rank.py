@@ -13,6 +13,40 @@ from rank import *
 
 log = logging.getLogger("qi.tests.data.rank")
 
+def cmp_to_key(mycmp):
+    'Convert a cmp= function into a key= function'
+    class K:
+        def __init__(self, obj, *args):
+            self.obj = obj
+        def __lt__(self, other):
+            return mycmp(self.obj, other.obj) < 0
+        def __gt__(self, other):
+            return mycmp(self.obj, other.obj) > 0
+        def __eq__(self, other):
+            return mycmp(self.obj, other.obj) == 0
+        def __le__(self, other):
+            return mycmp(self.obj, other.obj) <= 0
+        def __ge__(self, other):
+            return mycmp(self.obj, other.obj) >= 0
+        def __ne__(self, other):
+            return mycmp(self.obj, other.obj) != 0
+    return K
+
+def cmp_func(x, y):
+    if x is None and y is None:
+        return 0
+    elif x is None:
+        return 1
+    elif y is None:
+        return -1
+    else:
+        if x > y:
+            return 1
+        elif x < y:
+            return -1
+        else:
+            return 0
+            
 class TestRank(unittest.TestCase):
     def setUp(self):
         data = [
@@ -75,6 +109,36 @@ class TestRank(unittest.TestCase):
         self.assertEqual(res_data[1]["roa_rank"], 2)
         self.assertEqual(res_data[2]["roa_rank"], 2)
         self.assertEqual(res_data[3]["roa_rank"], 4)
+
+    def test_rank_none(self):
+        sort_list = [1, None, 8, 3, 2, 6, None, 0, 3, 5, 7]
+        res = sorted(sort_list, key=cmp_to_key(cmp_func))
+        
+        self.assertEqual(res[0], 0)
+        self.assertEqual(res[1], 1)
+        self.assertIsNone(res[-1])
+
+    def test_rank_key(self):
+        sort_data = [
+            {"name":"name1", "roa":1.6},
+            {"name":"name2", "roa":7.6},
+            {"name":"name3", "roa":7.6},
+            {"name":"name3", "roa":None},
+            {"name":"name4", "roa":9.6},
+        ]
+
+        def roa_comp_func(x, y):
+            return cmp_func(x["roa"], y["roa"])
+
+        res = sorted(sort_data, key=cmp_to_key(roa_comp_func))
+        self.assertEqual(res[0]["name"], "name1")
+        self.assertIsNotNone(res[-1]["name"], "name4")
+
+        res = sorted(sort_data, key=cmp_to_key(roa_comp_func), reverse=True)
+        self.assertEqual(res[-1]["name"], "name1")
+        self.assertIsNotNone(res[0]["name"], "name4")
+
+   
 
 
 
