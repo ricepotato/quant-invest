@@ -196,6 +196,8 @@ class FinancialReport(Base, Serializer):
         return "<FinancialReport('%d', '%d')>" % (self.id, self.comp_id)
 
 class Price(Base, Serializer):
+    __tablename__ = "price"
+
     id = Column(Integer, primary_key=True) # pkey
     code = Column(String(20)) # 종목 코드
     date = Column(String(10), nullable=False)
@@ -203,8 +205,8 @@ class Price(Base, Serializer):
     high = Column(FLOAT) # 고가
     low = Column(FLOAT) # 저가
     close = Column(FLOAT) # 종가
-    volume = Colum(FLOAT) # 거래량
-    change = Colum(FLOAT) # 등락
+    volume = Column(FLOAT) # 거래량
+    change = Column(FLOAT) # 등락
 
     def __init__(self, code, date, open, high, low, close, volume, change):
         self.code
