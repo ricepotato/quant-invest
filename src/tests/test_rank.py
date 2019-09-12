@@ -118,6 +118,10 @@ class TestRank(unittest.TestCase):
         self.assertEqual(res[1], 1)
         self.assertIsNone(res[-1])
 
+    def test_add_column_invalid_value(self):
+        with self.assertRaises(ValueError) as context:
+            self.rank.add_rank_column("roe", 5)
+
     def test_rank_key(self):
         sort_data = [
             {"name":"name1", "roa":1.6},
@@ -134,9 +138,26 @@ class TestRank(unittest.TestCase):
         self.assertEqual(res[0]["name"], "name1")
         self.assertIsNotNone(res[-1]["name"], "name4")
 
-        res = sorted(sort_data, key=cmp_to_key(roa_comp_func), reverse=True)
-        self.assertEqual(res[-1]["name"], "name1")
-        self.assertIsNotNone(res[0]["name"], "name4")
+    def test_rank_include_none(self):
+        data = [
+            {"name":"st1", "roa":0.5, "per":10.5}, # roa_rank 3 per_rank 4 total_rank 7
+            {"name":"st2", "roa":0.5, "per":None}, # roa_rank 3 per_rank 5 total_rank 8
+            {"name":"st3", "roa":None, "per":1.5}, # roa_rank 5 per_rank 1 total_rank 6
+            {"name":"st4", "roa":8.5, "per":6.5}, # roa_rank 1 per_rank 2 total_rank 3
+            {"name":"st5", "roa":3.5, "per":9.5}, # roa_rank 2 per_rank 3 total_rank 5
+        ]
+        rank = Rank(data)
+        rank.add_rank_column("roa", rank.DESC)
+        rank.add_rank_column("per", rank.ASC)
+
+        res_data = rank.get_rank()
+        self.assertIsNotNone(res_data)
+        self.assertEqual(res_data[0]["name"], "st4")
+        self.assertEqual(res_data[0]["total_rank"], 3)
+        self.assertEqual(res_data[-1]["name"], "st2")
+        self.assertEqual(res_data[-1]["total_rank"], 8)
+
+
 
    
 
