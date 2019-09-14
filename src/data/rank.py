@@ -35,8 +35,7 @@ def cmp_to_key(mycmp):
     return K
 
 class Rank(object):
-    def __init__(self, data):
-        self.data = data
+    def __init__(self):
         self.sort_columns = []
         self.DESC = 1
         self.ASC = -1
@@ -78,7 +77,8 @@ class Rank(object):
             return sorted_data
         return copied_data
 
-    def get_rank(self):
+    def get_rank(self, data):
+        self.data = data
         sorted_list = []        
         for sort_item in self.sort_columns:
             order = sort_item["order"]

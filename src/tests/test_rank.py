@@ -49,14 +49,15 @@ def cmp_func(x, y):
             
 class TestRank(unittest.TestCase):
     def setUp(self):
-        data = [
+        self.data = [
             {"name":"st1", "roa":0.5, "per":10.5}, # roa_rank 4 per_rank 5 total_rank 9
             {"name":"st2", "roa":0.5, "per":7.5}, # roa_rank 4 per_rank 3 total_rank 7
             {"name":"st3", "roa":1.5, "per":1.5}, # roa_rank 3 per_rank 1 total_rank 4
             {"name":"st4", "roa":8.5, "per":6.5}, # roa_rank 1 per_rank 2 total_rank 3
             {"name":"st5", "roa":3.5, "per":9.5}, # roa_rank 2 per_rank 4 total_rank 6
         ]
-        self.rank = Rank(data)
+        self.rank = Rank()
+        #self.rank.data = data
 
     def tearDown(self):
         pass
@@ -74,7 +75,7 @@ class TestRank(unittest.TestCase):
     def test_get_rank(self):
         self.rank.add_rank_column("roa", DESC)
         self.rank.add_rank_column("per", ASC)
-        res = self.rank.get_rank()
+        res = self.rank.get_rank(self.data)
 
         self.assertEqual(res[0]["name"], "st4")
         self.assertEqual(res[0]["total_rank"], 3)
@@ -90,10 +91,10 @@ class TestRank(unittest.TestCase):
             {"name":"name4", "kor":95, "eng":1.6}, # kor_rank 2 eng_rank 1 total_rank 3
         ]
 
-        self.rank = Rank(test_data)
+        self.rank = Rank()
         self.rank.add_rank_column("kor", DESC)
         self.rank.add_rank_column("eng", ASC)
-        res = self.rank.get_rank()
+        res = self.rank.get_rank(test_data)
         self.assertEqual(res[0]["total_rank"], 3)
         self.assertEqual(res[3]["total_rank"], 8)
 
@@ -146,23 +147,16 @@ class TestRank(unittest.TestCase):
             {"name":"st4", "roa":8.5, "per":6.5}, # roa_rank 1 per_rank 2 total_rank 3
             {"name":"st5", "roa":3.5, "per":9.5}, # roa_rank 2 per_rank 3 total_rank 5
         ]
-        rank = Rank(data)
+        rank = Rank()
         rank.add_rank_column("roa", rank.DESC)
         rank.add_rank_column("per", rank.ASC)
 
-        res_data = rank.get_rank()
+        res_data = rank.get_rank(data)
         self.assertIsNotNone(res_data)
         self.assertEqual(res_data[0]["name"], "st4")
         self.assertEqual(res_data[0]["total_rank"], 3)
         self.assertEqual(res_data[-1]["name"], "st2")
         self.assertEqual(res_data[-1]["total_rank"], 8)
-
-
-
-   
-
-
-
     
 if __name__ == "__main__":
     unittest.main()
