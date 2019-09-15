@@ -12,11 +12,11 @@ class StockDao:
             q = q.filter(Market.id == Company.market)
             q = q.filter(Market.name == market)
             year = kwargs.get("year", None)
-            min_cap = kwargs.get("min_cap", None)
+            min_mrkcap = kwargs.get("min_mrkcap", None)
             if year is not None:
                 q = q.filter(FinancialReport.period.like(f"{year}%"))
-            if min_cap is not None:
-                q = q.filter(Company.market_cap > min_cap)
+            if min_mrkcap is not None:
+                q = q.filter(Company.market_cap > min_mrkcap)
             
             rs_func = lambda item: {"code":item[0].code, 
                                     "market_cap":item[0].market_cap,
