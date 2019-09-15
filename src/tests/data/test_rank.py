@@ -5,11 +5,10 @@ import unittest
 import logging
 
 cur_path = os.path.dirname(__file__)
-base_path = os.path.join(cur_path, "..", "data")
-
+base_path = os.path.join(cur_path, "..", "..")
 sys.path.append(base_path)
 
-from rank import *
+from main.data.rank import *
 
 log = logging.getLogger("qi.tests.data.rank")
 
