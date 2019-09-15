@@ -9,6 +9,9 @@ sys.path.append(base_path)
 
 from server.app import server
 
+log = logging.getLogger("qi")
+log.setLevel(logging.DEBUG)
+log.addHandler(logging.StreamHandler())
 log = logging.getLogger("qi.server.main")
 
 def main():
