@@ -40,6 +40,9 @@ class Rank(object):
         self.DESC = 1
         self.ASC = -1
 
+    def init(self):
+        self.sort_columns = []
+
     def add_rank_column(self, name, order):
         if order == self.DESC or order == self.ASC:
             self.sort_columns.append({"name":name, "order":order})

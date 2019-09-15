@@ -156,6 +156,14 @@ class TestRank(unittest.TestCase):
         self.assertEqual(res_data[0]["total_rank"], 3)
         self.assertEqual(res_data[-1]["name"], "st2")
         self.assertEqual(res_data[-1]["total_rank"], 8)
+
+        rank.init()
+        rank.add_rank_column("roa", rank.DESC)
+        rank.add_rank_column("per", rank.ASC)
+        res_data = rank.get_rank(data)
+        self.assertIsNotNone(res_data)
+        self.assertEqual(res_data[0]["name"], "st4")
+        self.assertEqual(res_data[0]["total_rank"], 3)
     
 if __name__ == "__main__":
     unittest.main()
