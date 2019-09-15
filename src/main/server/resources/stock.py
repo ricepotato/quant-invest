@@ -12,7 +12,6 @@ sys.path.append(base_path)
 
 log = logging.getLogger('qi.server.resource.stock')
 
-
 from flask import jsonify
 from flask_restful import Resource, reqparse
 
@@ -26,7 +25,7 @@ class Stock(Resource):
         args = self._parse_req()
         kwargs = self._stock_data_kwargs(args)
         kwargs["year"] = year
-        res = {"stock_list":self.stock_data.get_data(market, **kwargs),
+        res = {"stock_list":self._get_stock_data(market, **kwargs),
                "market":market}
         return jsonify(res)
 
@@ -47,7 +46,15 @@ class Stock(Resource):
             val = getattr(args, key)
             if val is not None:
                 kwargs[key] = val
-
         return kwargs
+
+    def _get_stock_data(self, market, **kwargs):
+        res = self.stock_data.get_data(market, **kwargs)
+        for item in res:
+            item["date_insert"] = item["date_insert"]\
+                                  .strftime("%Y-%m-%d %H:%M:%S")
+        return res
+
+
 
         
