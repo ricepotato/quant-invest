@@ -1,19 +1,15 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
-
 import os
 import sys
 import logging
 
-cur_path = os.path.dirname(__file__)
-base_path = os.path.abspath(os.path.join(cur_path, ".."))
-sys.path.append(base_path)
+from resources.stock import Stock
+from common.apisrv import APIServer
+from common.logger import LogCfg
+from common.appctx import AppContext
 
 log = logging.getLogger('qi.server.app')
-
-from server import APIServer
-from resources.stock import Stock
-from common.appctx import AppContext
 
 ctx = {
     "dao":{
@@ -23,7 +19,7 @@ ctx = {
         "class":"data.rank.Rank"
     },
     "stock_db":{
-        "class":"server.data.StockDbData",
+        "class":"stdata.StockDbData",
         "properties":{
             "dao":{"bean":"dao"},
             "rank":{"bean":"rank"}
@@ -37,11 +33,5 @@ rck = {"st_data":st_data}
 
 server = APIServer()
 app = server.app
-api.add_resource(Stock, "/stock/<string:market>/<string:year>", 
+server.add_resource(Stock, "/stock/<string:market>/<string:year>", 
                      resource_class_kwargs=rck)
-
-def main():
-    server.run(port=8091)
-
-if __name__ == "__main__":
-    main()
