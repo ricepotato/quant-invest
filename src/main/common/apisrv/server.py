@@ -14,7 +14,7 @@ log = logging.getLogger('qi.server.server')
 
 from flask import Flask, jsonify, got_request_exception, request
 from flask_restful import Resource, Api
-from exc import *
+from .exc import *
 
 class APIServer(object):
     def __init__(self):
