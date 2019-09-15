@@ -40,12 +40,12 @@ class StockDataTestCase(unittest.TestCase):
         pass
 
     def test_stock_data(self):
-        params = {"year":"2018", "min_cap":4000}
+        params = {"year":"2018", "min_mrkcap":4000}
         res = self.stock_data.get_data("KOSDAQ", **params)
         for item in res:
             log.info(f"{item['company_name']},")
 
-        params = {"year":"2017", "min_cap":1000}
+        params = {"year":"2017", "min_mrkcap":1000}
         res = self.stock_data.get_data("KOSPI", **params)
         for item in res:
             log.info(f"{item['company_name']},")
