@@ -1,8 +1,18 @@
 FROM qi-base:latest
-ADD common.tar.gz /app/qi
-ADD server.tar.gz /app/qi
+RUN apk update
+RUN apk add nginx
+RUN apk add uwsgi
+RUN apk add openrc --no-cache
+RUN rm /etc/nginx/conf.d/default.conf
+ADD qi_server.conf /etc/nginx/conf.d
+RUN adduser -D -g 'www' www
+RUN mkdir /app
+ADD app.py /app
+ADD docker-entrypoint.sh /app
+ADD server.ini /app
+ADD requirements.txt /app
 RUN pip3 install --upgrade pip
-RUN pip3 install -r /app/qi/server/requirements.txt
-WORKDIR /app/qi/server
+RUN pip3 install -r /app/requirements.txt
+WORKDIR /app
 RUN chmod 755 ./*
-ENTRYPOINT [ "./docker-entrypoint.sh" ]
+#ENTRYPOINT [ "./docker-entrypoint.sh" ]
