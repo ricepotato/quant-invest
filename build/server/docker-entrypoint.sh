@@ -1,4 +1,4 @@
 #!/bin/sh
-
-rc-service nginx start
+chown -R www.www /app
+nginx
 uwsgi --ini server.ini
