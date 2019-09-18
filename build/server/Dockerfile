@@ -8,12 +8,14 @@ ADD qi_server.conf /etc/nginx/conf.d
 ADD nginx.conf /etc/nginx
 RUN adduser -D -g 'www' www
 RUN mkdir /app
-ADD app.py /app
-ADD docker-entrypoint.sh /app
-ADD server.ini /app
+ADD server.tar.gz /app
+ADD common.tar.gz /app/server
+ADD data.tar.gz /app/server
+ADD docker-entrypoint.sh /app/server
+ADD server.ini /app/server
 ADD requirements.txt /app
 RUN pip3 install --upgrade pip
 RUN pip3 install -r /app/requirements.txt
-WORKDIR /app
+WORKDIR /app/server
 RUN chmod 755 ./*
 ENTRYPOINT [ "./docker-entrypoint.sh" ]

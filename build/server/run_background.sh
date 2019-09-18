@@ -1,5 +1,6 @@
 #!/bin/bash
-
+docker stop qi-server
+docker rm qi-server
 docker run -d \
 --restart=always \
 --name qi-server \

@@ -13,7 +13,7 @@ log = logging.getLogger('qi.server.app')
 
 ctx = {
     "dao":{
-        "class":"server.dao.StockDao"
+        "class":"dao.StockDao"
     },
     "rank":{
         "class":"data.rank.Rank"
