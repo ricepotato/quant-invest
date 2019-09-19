@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
@@ -117,7 +117,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-LOG_PATH = "/var/log/django/"
+LOG_PATH = os.path.join(BASE_DIR, "log")
+try:
+    os.mkdir(LOG_PATH)
+except IOError as e:
+    pass
 
 LOGGING = {
     "version":1,
