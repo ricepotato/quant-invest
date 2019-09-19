@@ -1,6 +1,9 @@
 #!/bin/sh
+chown -R www.www /app
 
-touch qi-server.log
-chmod 755 ./*
-
-uwsgi --http :8080 --master --callable app --wsgi-file server.py --processes 4 --logto ./qi-server.log
+if [ $MODE == "DEV" ];
+then
+    /bin/sh
+else
+    ./start_server.sh
+fi

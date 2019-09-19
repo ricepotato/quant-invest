@@ -39,7 +39,7 @@ class Builder:
         self.cur_path = os.path.abspath(os.path.dirname(__file__))
         self.main_path = os.path.join(self.cur_path, "src", "main")
         self.bld_path = os.path.join(cur_path, "build")
-        self.srv_bld_path = os.path.join(self.bld_path, "server")
+        self.srv_bld_path = os.path.join(self.bld_path, "server", "main")
         self.build_action = {
             "server":self._build_server
         }
