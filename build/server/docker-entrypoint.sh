@@ -1,4 +1,9 @@
 #!/bin/sh
 chown -R www.www /app
-nginx
-uwsgi --ini server.ini
+
+if [ $MODE == "DEV" ];
+then
+    /bin/sh
+else
+    ./start_server.sh
+fi

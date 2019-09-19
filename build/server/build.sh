@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t qi-server:latest ./
+docker build --no-cache -t qi-server:latest ./

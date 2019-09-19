@@ -5,3 +5,4 @@ src/crawler/comp_guide_json/*
 src/package/qi.egg-info/*
 src/package/build/*
 src/package/dist/*
+build/server/*.tar.gz

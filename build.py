@@ -7,7 +7,7 @@ import logging
 
 log = logging.getLogger("qi.build")
 log.addHandler(logging.StreamHandler())
-log.setLevel(logging.INFO)
+log.setLevel(logging.DEBUG)
 
 cur_path = os.path.dirname(__file__)
 main_path = os.path.join(cur_path, "src", "main")
@@ -20,10 +20,12 @@ class WorkingDir:
 
     def __enter__(self):
         self.owd = os.getcwd()
+        log.debug("__enter__ self.owd=%s", self.owd)
         os.chdir(self.cwd)
 
     def __exit__(self, e_type, e_value, tb):
-        os.chdir(self.cwd)
+        log.debug("__exit__ self.owd=%s", self.owd)
+        os.chdir(self.owd)
 
     def cwd(self):
         return self.cwd
@@ -34,7 +36,7 @@ class WorkingDir:
 
 class Builder:
     def __init__(self):
-        self.cur_path = os.path.dirname(__file__)
+        self.cur_path = os.path.abspath(os.path.dirname(__file__))
         self.main_path = os.path.join(self.cur_path, "src", "main")
         self.bld_path = os.path.join(cur_path, "build")
         self.srv_bld_path = os.path.join(self.bld_path, "server")
@@ -44,6 +46,7 @@ class Builder:
 
     def build(self, target):
         log.info("build start target=%s", target)
+        self.target = target
         return self.build_action.get(target)()
 
     def _build_server(self):
@@ -58,9 +61,12 @@ class Builder:
         for filepath in mod_gzs:
             self._move_to(filepath, self.srv_bld_path)
 
+        self._run_build()
+
     def _compress(self, package):
         with WorkingDir(self.main_path) as wd:
             gz_filepath = os.path.join(self.main_path, f"{package}.tar.gz")
+            log.debug("gz_filepath=%s", gz_filepath)
             if os.path.exists(gz_filepath):
                 os.remove(gz_filepath)
             res = subprocess.check_output(["tar", "-cvf", f"{package}.tar", f"./{package}"])
@@ -76,6 +82,12 @@ class Builder:
         log.info("gz file move %s -> %s", filepath, dest_filepath)
         os.rename(filepath, dest_filepath)
         return dest_filepath
+
+    def _run_build(self):
+        with WorkingDir(self.srv_bld_path) as wd:
+            res = subprocess.check_output(["./build.sh"])
+            log.debug(res)
+
 
 def main():
     log.info("build.py run")
