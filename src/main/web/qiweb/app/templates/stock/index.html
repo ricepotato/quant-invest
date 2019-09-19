@@ -6,6 +6,13 @@
     width:120px;
 }
 </style>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="/static/app/scripts/jquery-3.4.1.min.js" ></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/static/app/scripts/stock.js"></script>
+<script>
+
+</script>
 <div class="row">
     <h2>종목추천</h2>
 </div>
@@ -21,10 +28,12 @@
 <div class="row">
     <form class="form-inline">
         <div class="form-group stock_form">
+            <!--
             <label for="txt_min_roa">최소 ROA</label> 
             <input type="text" id="txt_min_roa" class="form-control" placeholder="최소 ROA"> 
             <label for="txt_min_per">최소 PER</label> 
             <input type="text" id="txt_min_per" class="form-control" placeholder="최소 PER">
+            -->
             <label for="txt_min_market_cap">최소 시가총액(억원)</label> 
             <input type="text" id="txt_min_market_cap" class="form-control" placeholder="최소 시가총액(억원)">
         </div>
@@ -40,12 +49,32 @@
     </form>
 </div>
 <div>
-    <table>
-        <thead>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <table id="stock_tbl" class="display">
+            <thead>
+                <tr>
+                    <th>종합순위</th>
+                    <th>종목명(종목코드)</th>
+                    <th>ROA(순위)</th>
+                    <th>PER(순위)</th>
+                    <th>ROE</th>
+                    <th>PBR</th>
+                    <th>EV/EBITDA</th>
+                    <th>거래가</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>카카오(000123)</td>
+                    <td>10.0(1)</td>
+                    <td>20.1(5)</td>
+                    <td>20.1</td>
+                    <td>20.1</td>
+                    <td></td>
+                    <td>13,700</td>
+                </tr>
+            </tbody>
+        </table>
 </div>
 
 <div class="jumbotron">
