@@ -6,50 +6,64 @@
     width:120px;
 }
 </style>
+{% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="/static/app/scripts/jquery-3.4.1.min.js" ></script>
+<script type="text/javascript" charset="utf8" src="{% static 'app/scripts/jquery-3.4.1.min.js' %}"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
-<script type="text/javascript" charset="utf8" src="/static/app/scripts/stock.js"></script>
+<script type="text/javascript" charset="utf8" src="{% static 'app/scripts/stock.js' %}"></script>
 <script>
 
 </script>
 <div class="row">
-    <h2>종목추천</h2>
+    <div class="col-md-12">
+        <h2>종목추천</h2>
+    </div>
 </div>
 <div class="row">
-        <div class="col-md-4">
-            <h3>2019-05</h3>
-        </div>
-        <div class="col-md-6">
-            <input id="rdo_kospi" name="market_rdo" type="radio"> <label for="rdo_kospi">KOSPI</label> 
-            <input id="rdo_kosdaq" name="market_rdo" type="radio"> <label for="rdo_kosdaq">KOSDAQ</label>
-        </div>
+    <div class="col-md-12">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">2018 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">2016</a></li>
+                            <li><a href="#">2017</a></li>
+                            <li><a href="#">2018</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">KOSPI <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">KOSPI</a></li>
+                        <li><a href="#">KOSDAQ</a></li>
+                    </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-right">
+                    <div class="form-group">
+                    <input type="text" class="form-control" placeholder="최소 시가 총액">
+                    </div>
+                    <div class="form-group">
+                    <input type="text" class="form-control" placeholder="종목 수">
+                    </div>
+                    <button type="submit" class="btn btn-primary">새로고침</button>
+                </form>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+            </nav>
+    </div>
 </div>
 <div class="row">
-    <form class="form-inline">
-        <div class="form-group stock_form">
-            <!--
-            <label for="txt_min_roa">최소 ROA</label> 
-            <input type="text" id="txt_min_roa" class="form-control" placeholder="최소 ROA"> 
-            <label for="txt_min_per">최소 PER</label> 
-            <input type="text" id="txt_min_per" class="form-control" placeholder="최소 PER">
-            -->
-            <label for="txt_min_market_cap">최소 시가총액(억원)</label> 
-            <input type="text" id="txt_min_market_cap" class="form-control" placeholder="최소 시가총액(억원)">
-        </div>
-        <div class="form-group stock_form">
-            <label for="stk_count">종목 수</label> 
-            <input type="text" value="50" id="stk_count" class="form-control">
-            <input type="checkbox" id="chk_fin_stock"> 
-            <label for="chk_fin_stock">금융주 제외</label>
-            <input type="checkbox" id="chk_pub_stock"> 
-            <label for="chk_pub_stock">공익기업주 제외</label>
-            <button type="submit" class="btn btn-primary">새로고침</button>
-        </div>
-    </form>
-</div>
-<div>
-    <table id="stock_tbl" class="display">
+    <div class="col-md-12">
+        <table id="stock_tbl" class="display">
             <thead>
                 <tr>
                     <th>종합순위</th>
@@ -63,46 +77,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>카카오(000123)</td>
-                    <td>10.0(1)</td>
-                    <td>20.1(5)</td>
-                    <td>20.1</td>
-                    <td>20.1</td>
-                    <td></td>
-                    <td>13,700</td>
-                </tr>
             </tbody>
         </table>
+    </div>
 </div>
 
-<div class="jumbotron">
-    <h1>Django</h1>
-    <p class="lead">Django is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://www.djangoproject.com/" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
-</div>
-
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            Django gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://www.djangobook.com/en/2.0/index.html">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>The Python Package Index is a repository of software for the Python programming language.</p>
-        <p><a class="btn btn-default" href="https://pypi.org/">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Microsoft Azure</h2>
-        <p>You can easily publish to Microsoft Azure using Visual Studio. Find out how you can host your application using a free trial today.</p>
-        <p><a class="btn btn-default" href="http://azure.microsoft.com">Learn more &raquo;</a></p>
-    </div>
-</div>
 
 {% endblock %}

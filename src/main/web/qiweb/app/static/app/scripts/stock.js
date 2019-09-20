@@ -1,9 +1,8 @@
 
 $(document).ready(function() {
 	$('#stock_tbl').DataTable( {
-		"paging":   false,
-		"ordering": false,
-        "info":     false,
-        "pagingType": "full_numbers"
-	} );
-} );
+		"processing": true,
+        "serverSide": true,
+        "ajax": "/api/stock?market=KOSPI&year=2018"
+	});
+});
