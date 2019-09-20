@@ -120,7 +120,7 @@ USE_TZ = True
 LOG_PATH = os.path.join(BASE_DIR, "log")
 try:
     os.mkdir(LOG_PATH)
-except IOError as e:
+except (IOError, OSError) as e:
     pass
 
 LOGGING = {
