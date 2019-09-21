@@ -8,7 +8,8 @@ class QIApi(APIBase):
         APIBase.__init__(self)
         self.from_conf_file("qi-server")
 
-    def get_stock(self, market, year):
+    def get_stock(self, market, year, min_mrkcap):
         resource = f"stock/{market}/{year}"
-        return self.get(resource)
+        params = {"min_mrkcap":min_mrkcap}
+        return self.get(resource, params)
 

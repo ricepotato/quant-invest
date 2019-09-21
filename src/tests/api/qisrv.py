@@ -22,7 +22,7 @@ class QIClientTestCase(unittest.TestCase):
 
     def test(self):
         log.info("qi.client")
-        res = self.api.get_stock("KOSDAQ", 2018)
+        res = self.api.get_stock("KOSDAQ", 2018, min_mrkcap=4000)
         self.assertIsNotNone(res)
 
 
