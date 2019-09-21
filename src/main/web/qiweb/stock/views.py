@@ -27,26 +27,45 @@ def index(request):
         }
     )
 
-def api_stock(request):
-    qi_api = QIApi()
+def add_comp_guide_link(comp_code):
+    return f"<a target='_blank' href='http://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?gicode=A{comp_code}&MenuYn=Y'>{comp_code}</a>"
+
+def row_func(item):
+    return [item["total_rank"], f"{item['company_name']}(" + add_comp_guide_link(item['code']) + ")", 
+            f"{item['roa']}({item['roa_rank']})", 
+            f"{item['per']}({item['per_rank']})", 
+            item["roe"], item["pbr"], "", item["market_cap"]]
+
+def args_parse(request):
     market = request.GET['market']
     year = request.GET["year"]
     length = request.GET.get("length", 10)
     draw = request.GET.get("draw")
+    min_mrkcap = request.GET.get("min_mrkcap", None)
     length = int(length)
-    stock_data = qi_api.get_stock(market, year)
+    if min_mrkcap is None or min_mrkcap == "":
+        min_mrkcap = None
+    else:
+        min_mrkcap = int(min_mrkcap)
+    draw = int(draw)
+
+    return {"market":market, "year":year, 
+            "length":length, "draw":draw, 
+            "min_mrkcap":min_mrkcap}
+
+def api_stock(request):
+    qi_api = QIApi()
+    args = args_parse(request)
+    
+    stock_data = qi_api.get_stock(args["market"], args["year"], 
+                                  args["min_mrkcap"])
     stock_list = stock_data["stock_list"]
-    stock_list = stock_list[:length]
-    log.info("length=%d", length)
-    data_processed = map(lambda item: [item["total_rank"], item["company_name"], 
-                                       item["roa"], item["per"], item["roe"], item["pbr"], "", ""], stock_list)
+    stock_list = stock_list[:args["length"]]
+    table_data = list(map(row_func, stock_list))
     data = {
-        "draw":int(draw),
+        "draw":args["draw"],
         "recordsTotal":len(stock_data),
         "recordsFiltered":len(stock_data),
-        "data": list(data_processed)
+        "data": table_data
     }
-    #{"market": "KOSDAQ", "stock_list": [{"code": "032940", "company_name": "\uc6d0\uc775", "date_insert": "2019-09-05 20:22:43", 
-    # "market_cap": null, "pbr": 0.58, "per": 0.58, "per_rank": 53, "period": "2016-12", "roa": 53.1, "roa_rank": 7, "roe": 99.91, 
-    # "total_rank": 60}
     return JsonResponse(data)

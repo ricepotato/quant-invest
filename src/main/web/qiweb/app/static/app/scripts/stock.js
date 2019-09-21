@@ -13,11 +13,13 @@ function create_table(){
 		"processing": true,
 		"serverSide": true,
 		"searching": false,
+		"ordering": false,
 		"ajax": {
             "url": "/api/stock",
             "data": function ( d ) {
 				d.market = market;
 				d.year = year;
+				d.min_mrkcap = $("#input_min_mrkcap").val();
                 // d.custom = $('#myInput').val();
                 // etc
             }
