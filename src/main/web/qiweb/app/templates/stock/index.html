@@ -11,54 +11,52 @@
 <script type="text/javascript" charset="utf8" src="{% static 'app/scripts/jquery-3.4.1.min.js' %}"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="{% static 'app/scripts/stock.js' %}"></script>
-<script>
 
-</script>
 <div class="row">
     <div class="col-md-12">
-        <h2>종목추천</h2>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">2018 <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">2016</a></li>
-                            <li><a href="#">2017</a></li>
-                            <li><a href="#">2018</a></li>
-                        </ul>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+            <a class="navbar-brand" href="#">종목추천</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        
+            <div class="collapse navbar-collapse" id="navbarColor03">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            2018
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">2018</a>
+                            <a class="dropdown-item" href="#">2017</a>
+                            <a class="dropdown-item" href="#">2016</a>
+                            <!--<div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                            -->
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            KOSPI
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">KOSPI</a>
+                            <a class="dropdown-item" href="#">KOSDAQ</a>
+                            <!--<div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                            -->
+                        </div>
                     </li>
                 </ul>
-                </div>
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">KOSPI <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">KOSPI</a></li>
-                        <li><a href="#">KOSDAQ</a></li>
-                    </ul>
-                    </li>
-                </ul>
-                <form class="navbar-form navbar-right">
-                    <div class="form-group">
-                    <input type="text" class="form-control" placeholder="최소 시가 총액">
-                    </div>
-                    <div class="form-group">
-                    <input type="text" class="form-control" placeholder="종목 수">
-                    </div>
-                    <button type="submit" class="btn btn-primary">새로고침</button>
+                <form class="form-inline">
+                <span>최소 시가 총액 &nbsp;</span>
+                <input class="form-control mr-sm-2" type="search" placeholder="최소 시가 총액" aria-label="Search">
+                <span>종목 수 &nbsp; </span>
+                <input class="form-control mr-sm-2" type="search" placeholder="종목 수" aria-label="Search">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">새로고침</button>
                 </form>
-                </div><!-- /.navbar-collapse -->
-            </div><!-- /.container-fluid -->
-            </nav>
+            </div>
+        </nav>
     </div>
 </div>
 <div class="row">
@@ -81,6 +79,5 @@
         </table>
     </div>
 </div>
-
 
 {% endblock %}
