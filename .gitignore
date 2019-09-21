@@ -6,4 +6,4 @@ src/package/qi.egg-info/*
 src/package/build/*
 src/package/dist/*
 build/server/main/*.tar.gz
-src/main/web/qiweb/log/*.log
+src/main/web/log/*.log
