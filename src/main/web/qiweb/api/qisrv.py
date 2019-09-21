@@ -9,6 +9,6 @@ class QIApi(APIBase):
         self.from_conf_file("qi-server")
 
     def get_stock(self, market, year):
-        resource = f"/stock/{market}/{year}"
+        resource = f"stock/{market}/{year}"
         return self.get(resource)
 

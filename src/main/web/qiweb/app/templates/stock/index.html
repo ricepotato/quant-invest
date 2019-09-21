@@ -8,14 +8,15 @@
 </style>
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<link rel="stylesheet" type="text/css" href="{% static 'app/content/stock.css' %}">
 <script type="text/javascript" charset="utf8" src="{% static 'app/scripts/jquery-3.4.1.min.js' %}"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="{% static 'app/scripts/stock.js' %}"></script>
 
 <div class="row">
     <div class="col-md-12">
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-            <a class="navbar-brand" href="#">종목추천</a>
+        <nav class="navbar navbar-expand-lg navbar-light stock-nav" style="background-color: #e3f2fd;">
+            <a class="navbar-brand" href="#">마법공식 종목 추천</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -24,12 +25,12 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            2018
+                            <span id="cur_year">2018</span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">2018</a>
-                            <a class="dropdown-item" href="#">2017</a>
-                            <a class="dropdown-item" href="#">2016</a>
+                            <a class="dropdown-item" id="btn_year_2018" href="#">2018</a>
+                            <a class="dropdown-item" id="btn_year_2017" href="#">2017</a>
+                            <a class="dropdown-item" id="btn_year_2016" href="#">2016</a>
                             <!--<div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Something else here</a>
                             -->
@@ -37,11 +38,11 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            KOSPI
+                            <span id="cur_mrk">KOSPI</span>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">KOSPI</a>
-                            <a class="dropdown-item" href="#">KOSDAQ</a>
+                            <a class="dropdown-item" id="btn_mrk_kospi" href="#">KOSPI</a>
+                            <a class="dropdown-item" id="btn_mrk_kosdaq" href="#">KOSDAQ</a>
                             <!--<div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">Something else here</a>
                             -->
@@ -53,13 +54,13 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="최소 시가 총액" aria-label="Search">
                 <span>종목 수 &nbsp; </span>
                 <input class="form-control mr-sm-2" type="search" placeholder="종목 수" aria-label="Search">
-                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">새로고침</button>
+                <button class="btn btn-outline-primary my-2 my-sm-0" id="btn_refresh" type="submit">새로고침</button>
                 </form>
             </div>
         </nav>
     </div>
 </div>
-<div class="row">
+<div class="row stock-table">
     <div class="col-md-12">
         <table id="stock_tbl" class="display">
             <thead>

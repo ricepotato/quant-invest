@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 import json
+import logging
 import datetime
 
 from django.shortcuts import render
@@ -13,6 +14,8 @@ from django.http import HttpResponse, JsonResponse
 
 from api import QIApi
 # Create your views here.
+
+log = logging.getLogger("qi.web" + __name__)
 
 def index(request):
     return render(
@@ -28,11 +31,17 @@ def api_stock(request):
     qi_api = QIApi()
     market = request.GET['market']
     year = request.GET["year"]
+    length = request.GET.get("length", 10)
+    draw = request.GET.get("draw")
+    length = int(length)
     stock_data = qi_api.get_stock(market, year)
+    stock_list = stock_data["stock_list"]
+    stock_list = stock_list[:length]
+    log.info("length=%d", length)
     data_processed = map(lambda item: [item["total_rank"], item["company_name"], 
-                                       item["roa"], item["per"], item["roe"], item["pbr"], "", ""], stock_data["stock_list"])
+                                       item["roa"], item["per"], item["roe"], item["pbr"], "", ""], stock_list)
     data = {
-        "draw":1,
+        "draw":int(draw),
         "recordsTotal":len(stock_data),
         "recordsFiltered":len(stock_data),
         "data": list(data_processed)

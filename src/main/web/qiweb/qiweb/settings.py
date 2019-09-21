@@ -133,11 +133,11 @@ LOGGING = {
     },
     "formatters":{
         "verbose":{
-            "fotmat":"[%(loglevel)s|%(asctime)s|%(name)s] %(message)s",
+            "format":"[%(loglevel)s|%(asctime)s|%(name)s] %(message)s",
             "style":"{"
         },
         "simple":{
-            "format":"[%(loglevel)s|%(asctime)s|%(name)s] %(message)s",
+            "format":"[%(loglevel)s|%(name)s] %(message)s",
             "style":"{"
         }
     },
