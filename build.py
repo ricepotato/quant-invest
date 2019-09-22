@@ -33,34 +33,17 @@ class WorkingDir:
     def owd(self):
         return self.owd
 
-class ServerBuilder:
+class AppBuilder:
     def __init__(self, cur_path):
-        self.full = False
         self.main_path = os.path.join(cur_path, "src", "main")
         self.bld_path = os.path.join(cur_path, "build")
-        self.bld_base_path = os.path.join(self.bld_path, "server", "base")
-        self.bld_main_path = os.path.join(self.bld_path, "server", "main")
-
-    def run(self, full):
-        self.full = full
-
-        log.info("build server...")
-        res = self._compress("common")
-        res = self._compress("data")
-        res = self._compress("server")
-
-        mod_gzs = map(lambda module: self._compress(module), 
-                      ["common", "data", "server"])
-
-        for filepath in mod_gzs:
-            self._move_to(filepath, self.bld_main_path)
-
-        self._run_build()
 
     def _move_to(self, filepath, dest_path):
         filename = os.path.split(filepath)[-1]
         dest_filepath = os.path.join(dest_path, filename)
         log.info("gz file move %s -> %s", filepath, dest_filepath)
+        if os.path.exists(dest_filepath):
+            os.remove(dest_filepath)
         os.rename(filepath, dest_filepath)
         return dest_filepath
 
@@ -91,11 +74,46 @@ class ServerBuilder:
             log.debug(res)
             log.info("build image... complete")
 
+class WebBuilder(AppBuilder):
+    def __init__(self, cur_path):
+        AppBuilder.__init__(self, cur_path)
+        self.full = False
+        self.bld_base_path = os.path.join(self.bld_path, "web", "base")
+        self.bld_main_path = os.path.join(self.bld_path, "web", "main")
+        self.packages = ["web"]
+
+    def run(self, full):
+        self.full = full
+        log.info("build web.")
+        mod_gzs = map(lambda module: self._compress(module), 
+                      self.packages)
+        for filepath in mod_gzs:
+            self._move_to(filepath, self.bld_main_path)
+        self._run_build()
+
+class ServerBuilder(AppBuilder):
+    def __init__(self, cur_path):
+        AppBuilder.__init__(self, cur_path)
+        self.full = False
+        self.bld_base_path = os.path.join(self.bld_path, "server", "base")
+        self.bld_main_path = os.path.join(self.bld_path, "server", "main")
+        self.packages = ["common", "data", "server"]
+
+    def run(self, full):
+        self.full = full
+        log.info("build server.")
+        mod_gzs = map(lambda module: self._compress(module), 
+                      self.packages)
+        for filepath in mod_gzs:
+            self._move_to(filepath, self.bld_main_path)
+        self._run_build()
+
 class Builder:
     def __init__(self):
         self.cur_path = os.path.abspath(os.path.dirname(__file__))
         self.build_action = {
-            "server":ServerBuilder
+            "server":ServerBuilder,
+            "web":WebBuilder
         }
 
     def build(self, target, full):

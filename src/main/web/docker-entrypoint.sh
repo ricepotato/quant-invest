@@ -1,3 +1,9 @@
 #!/bin/sh
+chown -R www.www /app
 
-python3 manage.py runserver 0.0.0.0:8090
+if [ $MODE == "DEV" ];
+then
+    /bin/sh
+else
+    ./start_server.sh
+fi
