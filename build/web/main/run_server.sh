@@ -7,4 +7,4 @@ docker run -d \
 --hostname=dockerhost-web \
 -p 80:80 \
 --net=qinet \
-qi-server:latest
+qi-web:latest
