@@ -7,3 +7,4 @@ then
 else
     ./start_server.sh
 fi
+
