@@ -1,0 +1,6 @@
+{
+    "qi-server":{
+        "host":"qi-server",
+        "port":8089
+    }
+}
