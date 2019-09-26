@@ -13,6 +13,12 @@ def handle_exception(func):
             return None
     return wrapper
 
+def is_nan(val):
+    if val == val:
+        return False
+    else:
+        return True
+
 class PriceData:
     
     def __init__(self):
@@ -29,7 +35,7 @@ class PriceData:
         for code in code_list:
             self.get_df(code)
 
-    @handle_exception
+    #@handle_exception
     def get_df(self, code: str):
         """ get data field 
         KeyError: '2014-02-02 00:00:00'
@@ -56,21 +62,35 @@ class PriceData:
 
         # self.start_year 부터 ~ 현재까지
         log.info("get_df code=%s", code)
+        count = self.price_dao.select(code=code).count()
+        if count > 10:
+            log.warning("data count=%d, code=%s", count, code)
+            return None
+
         df = fdr.DataReader(code, f"{self.start_year}-01-01")
         this_yaer = datetime.datetime.now().year
-        for year in range(self.start_year, this_yaer + 1):
+
+        year_list = list(range(self.start_year, this_yaer + 1))
+        year_list.reverse()
+        for year in year_list:
             for month in range(1, 13):
-                head_df = df.loc["{}-{:02}".format(year, month)].head(1)
+                try:
+                    head_df = df.loc["{}-{:02}".format(year, month)].head(1)
+                except KeyError as e:
+                    log.warning("key error code=%s year=%d month=%d", code, year, month)
+                    continue
                 head_dict = self._day_df_to_dict(head_df)
-                tail_df = df.loc["{}-{:02}".format(year, month)].tail(1)
-                tail_dict = self._day_df_to_dict(tail_df)
+                if is_nan(head_dict["change"]):
+                    head_dict["change"] = 0
+                #tail_df = df.loc["{}-{:02}".format(year, month)].tail(1)
+                #tail_dict = self._day_df_to_dict(tail_df)
 
                 head_dict["code"] = code
-                tail_dict["code"] = code
+                #tail_dict["code"] = code
 
                 log.info("add_price date=%s", "{}-{:02}".format(year, month))
                 self.price_dao.add_price(head_dict)
-                self.price_dao.add_price(tail_dict)
+                #self.price_dao.add_price(tail_dict)
 
     def _day_df_to_dict(self, df):
         dt = df.index[0]
