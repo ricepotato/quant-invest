@@ -1,0 +1,34 @@
+{
+    "rank":{
+        "class":"data.rank.Rank"
+    },
+    "stock_db":{
+        "class":"stdata.StockDbData",
+        "properties":{
+            "dao":{"bean":"dao"},
+            "rank":{"bean":"rank"}
+        }
+    },
+    "price_data":{
+        "class":"data.price.PriceData",
+        "properties":{
+            "comp_dao":{"bean":"comp_dao"},
+            "price_dao":{"bean":"price_dao"}
+        }
+    },
+    "comp_dao":{
+        "class":"common.database.CompanyDao",
+        "init_args":[
+            {"bean":"db"}
+        ]
+    },
+    "price_dao":{
+        "class":"common.database.PriceDao",
+        "init_args":[
+            {"bean":"db"}
+        ]
+    },
+    "db":{
+        "class":"common.database.Database"
+    }
+}

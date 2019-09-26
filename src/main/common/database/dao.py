@@ -269,4 +269,11 @@ class PriceDao(Dao):
         obj = self._insert(obj)
         return obj.id
 
-    
+    def add_price(self, price_dict):
+        count = self.select(code=price_dict["code"], date=price_dict["date"]).count()
+        if count <= 0:
+            self.insert(price_dict["code"], price_dict["date"], price_dict["open"],
+                        price_dict["high"], price_dict["low"], price_dict["close"],
+                        price_dict["volume"], price_dict["change"])
+        return True
+        

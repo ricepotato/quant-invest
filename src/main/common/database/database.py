@@ -201,15 +201,15 @@ class Price(Base, Serializer):
     id = Column(Integer, primary_key=True) # pkey
     code = Column(String(20)) # 종목 코드
     date = Column(String(10), nullable=False)
-    open = Column(FLOAT) # 시가
-    high = Column(FLOAT) # 고가
-    low = Column(FLOAT) # 저가
-    close = Column(FLOAT) # 종가
-    volume = Column(FLOAT) # 거래량
-    change = Column(FLOAT) # 등락
+    open = Column(Integer) # 시가
+    high = Column(Integer) # 고가
+    low = Column(Integer) # 저가
+    close = Column(Integer) # 종가
+    volume = Column(Integer) # 거래량
+    change = Column(Integer) # 등락
 
     def __init__(self, code, date, open, high, low, close, volume, change):
-        self.code
+        self.code = code
         self.date = date
         self.open = open
         self.high = high
@@ -217,6 +217,8 @@ class Price(Base, Serializer):
         self.close = close
         self.volume = volume
         self.change = change
+
+    UniqueConstraint(code, date, name="unique_code_date")
 
     def __repr__(self):
         return "<Price('%s', '%s')>" % (self.code, str(self.close))
