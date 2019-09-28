@@ -12,71 +12,71 @@
 <script type="text/javascript" charset="utf8" src="{% static 'app/scripts/jquery-3.4.1.min.js' %}"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="{% static 'app/scripts/stock.js' %}"></script>
-
-<div class="row">
-    <div class="col-md-12">
-        <nav class="navbar navbar-expand-lg navbar-light stock-nav" style="background-color: #e3f2fd;">
-            <a class="navbar-brand" href="#">마법공식 종목 추천</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        
-            <div class="collapse navbar-collapse" id="navbarColor03">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span id="cur_year">2018</span>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" id="btn_year_2018" href="#">2018</a>
-                            <a class="dropdown-item" id="btn_year_2017" href="#">2017</a>
-                            <a class="dropdown-item" id="btn_year_2016" href="#">2016</a>
-                            <!--<div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                            -->
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span id="cur_mrk">KOSPI</span>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" id="btn_mrk_kospi" href="#">KOSPI</a>
-                            <a class="dropdown-item" id="btn_mrk_kosdaq" href="#">KOSDAQ</a>
-                            <!--<div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                            -->
-                        </div>
-                    </li>
-                </ul>
-                <form class="form-inline">
-                <span>최소 시가 총액 &nbsp;</span>
-                <input class="form-control mr-sm-2" type="number" id="input_min_mrkcap" placeholder="최소 시가 총액" aria-label="Search">
-                <button class="btn btn-outline-primary my-2 my-sm-0" id="btn_refresh" type="button">새로고침</button>
-                </form>
-            </div>
-        </nav>
+<main role="main">
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-expand-lg navbar-light stock-nav" style="background-color: #e3f2fd;">
+                <a class="navbar-brand" href="#">마법공식 종목 추천</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            
+                <div class="collapse navbar-collapse" id="navbarColor03">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="cur_year">2018</span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" id="btn_year_2018" href="#">2018</a>
+                                <a class="dropdown-item" id="btn_year_2017" href="#">2017</a>
+                                <a class="dropdown-item" id="btn_year_2016" href="#">2016</a>
+                                <!--<div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                -->
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span id="cur_mrk">KOSPI</span>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" id="btn_mrk_kospi" href="#">KOSPI</a>
+                                <a class="dropdown-item" id="btn_mrk_kosdaq" href="#">KOSDAQ</a>
+                                <!--<div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                -->
+                            </div>
+                        </li>
+                    </ul>
+                    <form class="form-inline">
+                    <span>최소 시가 총액 &nbsp;</span>
+                    <input class="form-control mr-sm-2" type="number" id="input_min_mrkcap" placeholder="최소 시가 총액" aria-label="Search">
+                    <button class="btn btn-outline-primary my-2 my-sm-0" id="btn_refresh" type="button">새로고침</button>
+                    </form>
+                </div>
+            </nav>
+        </div>
     </div>
-</div>
-<div class="row stock-table">
-    <div class="col-md-12">
-        <table id="stock_tbl" class="display">
-            <thead>
-                <tr>
-                    <th>종합순위</th>
-                    <th>종목명(종목코드)</th>
-                    <th>ROA(순위)</th>
-                    <th>PER(순위)</th>
-                    <th>ROE</th>
-                    <th>PBR</th>
-                    <th>EV/EBITDA</th>
-                    <th>시가총액(억원)</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+    <div class="row stock-table">
+        <div class="col-md-12">
+            <table id="stock_tbl" class="display">
+                <thead>
+                    <tr>
+                        <th>종합순위</th>
+                        <th>종목명(종목코드)</th>
+                        <th>ROA(순위)</th>
+                        <th>PER(순위)</th>
+                        <th>ROE</th>
+                        <th>PBR</th>
+                        <th>EV/EBITDA</th>
+                        <th>시가총액(억원)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-
+</main>
 {% endblock %}

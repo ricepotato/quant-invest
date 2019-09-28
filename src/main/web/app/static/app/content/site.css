@@ -40,3 +40,7 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+main {
+    padding-top: 1.5rem;
+}
