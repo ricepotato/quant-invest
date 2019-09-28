@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'd34cbcad-ef60-428f-8bfd-ee0183ca58ec'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     'app',
+    'calc',
     # Add your apps here to enable them
     'django.contrib.admin',
     'django.contrib.auth',
@@ -133,11 +134,11 @@ LOGGING = {
     },
     "formatters":{
         "verbose":{
-            "format":"[%(loglevel)s|%(asctime)s|%(name)s] %(message)s",
+            "format":"[{levelname}|{asctime}|{name}] {message}",
             "style":"{"
         },
         "simple":{
-            "format":"[%(loglevel)s|%(name)s] %(message)s",
+            "format":"[{levelname}|{name}] {message}",
             "style":"{"
         }
     },
