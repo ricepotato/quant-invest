@@ -26,6 +26,25 @@ class PriceData:
         self.price_dao = None
         self.start_year = 2014
 
+    def get_price(self, code, date_sw, **kwargs):
+        """ 특정한 월의 주가정보를 가져온다.
+        주가정보는 해당 월의 가장 첫번째 평일 가격을 가져온다.
+        """
+        res = self._get_price_from_db(code, date_sw)
+        if not res:
+            self.get_df(code, date_sw)
+            res = self._get_price_from_db(code, date_sw)
+        return res
+
+    def _get_price_from_db(self, code, date_sw):
+        """ db 에 입력된 주가정보를 가져온다. """
+        res = self.price_dao.select(code=code, date_sw=date_sw)\
+            .order_by([{"date":"ASC"}])
+        if not res:
+            return None
+        else:
+            return res[0]
+
     def fill_price(self):
         """ 모든 종가 data 입력 2014 ~ 현재 
         월초, 중순, 하반기 데이터 입력. 종목당 월 3개 항목입력
@@ -36,7 +55,7 @@ class PriceData:
             self.get_df(code)
 
     #@handle_exception
-    def get_df(self, code: str):
+    def get_df(self, code: str, date_sw):
         """ get data field 
         KeyError: '2014-02-02 00:00:00'
         >>> 
@@ -62,11 +81,6 @@ class PriceData:
 
         # self.start_year 부터 ~ 현재까지
         log.info("get_df code=%s", code)
-        count = self.price_dao.select(code=code).count()
-        if count > 10:
-            log.warning("data count=%d, code=%s", count, code)
-            return None
-
         df = fdr.DataReader(code, f"{self.start_year}-01-01")
         this_yaer = datetime.datetime.now().year
 
@@ -91,6 +105,7 @@ class PriceData:
                 log.info("add_price date=%s", "{}-{:02}".format(year, month))
                 self.price_dao.add_price(head_dict)
                 #self.price_dao.add_price(tail_dict)
+
 
     def _day_df_to_dict(self, df):
         dt = df.index[0]
