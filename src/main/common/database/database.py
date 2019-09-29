@@ -5,7 +5,8 @@ import json
 import logging
 
 from contextlib import contextmanager
-from sqlalchemy import create_engine, Column, Integer, String, FLOAT, DATETIME
+from sqlalchemy import (create_engine, Column, Integer, String, 
+                        FLOAT, DATETIME, SMALLINT)
 from sqlalchemy import Index, UniqueConstraint
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
@@ -223,6 +224,21 @@ class Price(Base, Serializer):
     def __repr__(self):
         return "<Price('%s', '%s')>" % (self.code, str(self.close))
 
+class ERBoard(Base, Serializer):
+    __tablename__ = "er_board"
+
+    id = Column(Integer, primary_key=True) # pkey
+    code = Column(String(20)) # 종목 코드
+    st_date = Column(String(10), nullable=False) # 시작 날짜
+    hold = Column(SMALLINT, nullable=False) # 보유기간
+    period = Column(SMALLINT, nullable=False) # 전체기간
+    owner = Column(String(20)) # 소유자
+
+    Index("owner_idx", owner)
+
+    def __repr__(self):
+        return "<ERBoard('%s')>" % (self.code)
+
 class Singleton(type):
     """Singleton.
     @see: http://stackoverflow.com/questions/6760685/creating-a-singleton-in-python
@@ -261,6 +277,7 @@ class Database(object):
             session.close()
 
     def create_all(self):
+        """ creates all tables. """
         try:
             Base.metadata.create_all(self.engine)
         except SQLAlchemyError as e:

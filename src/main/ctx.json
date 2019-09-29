@@ -30,5 +30,11 @@
     },
     "db":{
         "class":"common.database.Database"
+    },
+    "calc":{
+        "class":"data.calc.Calc",
+        "properties":{
+            "price_data":{"bean":"price_data"}
+        }
     }
 }
