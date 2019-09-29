@@ -41,6 +41,14 @@ class CalcTestCase(unittest.TestCase):
         date_res = dc + 12
         self.assertEqual(str(date_res), "2019-01")
 
+    def test_calc_invalid(self):
+        code = "000660"
+        hold = 12
+        st_date = "2017-01"
+        period = 10
+        res = self.calc.get_list(code, st_date, hold, period)
+        self.assertIsNotNone(res)
+
     def test_calc_long_period(self):
         code = "000660"
         hold = 12

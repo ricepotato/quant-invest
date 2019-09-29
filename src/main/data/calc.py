@@ -51,8 +51,11 @@ class Calc:
         total_er = 0
         for item in er_list:
             total_er += item["earning_ratio"]
-        avg_er = float(total_er) / float(len(er_list))
-        res["avg_er"] = avg_er
+        if len(er_list) > 0:
+            avg_er = float(total_er) / float(len(er_list))
+            res["avg_er"] = avg_er
+        else:
+            res["avg_er"] = 0
 
         return res
 
