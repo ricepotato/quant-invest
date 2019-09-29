@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 import datetime
 import logging
 import FinanceDataReader as fdr
@@ -56,7 +57,9 @@ class PriceData:
 
     #@handle_exception
     def get_df(self, code: str, date_sw):
-        """ get data field 
+        """ 
+        fr data 로부터 2014 ~ 현재까지의 data 를 받아와 저장한다/.
+        get data field 
         KeyError: '2014-02-02 00:00:00'
         >>> 
         >>> df.loc["2014-02-03 00:00:00"].Open

@@ -39,10 +39,6 @@ class PriceDataTestCase(unittest.TestCase):
         res = self.price_data.get_price("008060", "2017-03")
         self.assertEqual(res["date"], "2017-03-02")
         self.assertEqual(res["close"], 8350)
-
-
-
-
     
 if __name__ == "__main__":
     unittest.main()
