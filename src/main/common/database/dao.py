@@ -34,12 +34,19 @@ op_map = {
     "gte":lambda k, v : k >= v,
     "like":lambda k, v : k.like('%{}%'.format(v)),
     "ilike":lambda k, v : k.ilike('%{}%'.format(v)),
+    "sw":lambda k, v : k.like('{}%'.format(v)), # startswith
+    "ew":lambda k, v : k.like('%{}'.format(v)), # endswith
     "in":lambda k, v : k.in_(v)
 }
 
+dsec_func = lambda obj : obj.desc()
+asc_func = lambda obj : obj.asc()
+
 order_map = {
-    Order.DESC : lambda obj : obj.desc(),
-    Order.ASC : lambda obj : obj.asc()
+    Order.DESC : dsec_func,
+    Order.ASC : asc_func,
+    "DESC" : dsec_func,
+    "ASC" : asc_func,
 }
 
 class Query(object):
@@ -82,18 +89,18 @@ class Query(object):
         for exp in exp_list:
             self.q = self.q.filter(exp)
 
-        if self.limit_val is not None:
-            self.q = self.q.limit(self.limit_val)
-        
-        if self.offset is not None:
-            self.q = self.q.offset(self.offset)
-
         if self.orderby is not None:
             for item in self.orderby:
                 for column, order in item.items():
                     self.q = self.q.order_by(order_map[order]\
                                              (getattr(self.model, 
                                                       column)))
+
+        if self.limit_val is not None:
+            self.q = self.q.limit(self.limit_val)
+        
+        if self.offset is not None:
+            self.q = self.q.offset(self.offset)
 
     def _parse_exp(self, key, val):
         try:
