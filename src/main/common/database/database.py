@@ -232,9 +232,9 @@ class ERBoard(Base, Serializer):
     st_date = Column(String(10), nullable=False) # 시작 날짜
     hold = Column(SMALLINT, nullable=False) # 보유기간
     period = Column(SMALLINT, nullable=False) # 전체기간
-    owner = Column(String(20)) # 소유자
+    group = Column(SMALLINT) # group
 
-    Index("owner_idx", owner)
+    Index("group_idx", group)
 
     def __repr__(self):
         return "<ERBoard('%s')>" % (self.code)
