@@ -67,21 +67,41 @@ class CalcTestCase(unittest.TestCase):
             "code":code,
             "avg_er":0,
             "total":{
-                "st":"2017-01", "end":"2017-06", "buy_price":0, "sell_price":0, "earning_ratio":0
+                "buy":{
+                    "price":0,
+                    "date":"2017-03-02",
+                    "st_date":"2017-03"
+                },
+                "sell":{
+                    "price":0,
+                    "date":"2017-06-01",
+                    "end_date":"2017-06"
+                },
+                earning_ratio:0
             },
             "er_list":[
-                {"st":"2017-01", "end":"2017-03", "buy_price":0, "sell_price":0, "earning_ratio":0},
-                {"st":"2017-02", "end":"2017-04", "buy_price":0, "sell_price":0, "earning_ratio":0},
-                {"st":"2017-03", "end":"2017-05", "buy_price":0, "sell_price":0, "earning_ratio":0},
-                {"st":"2017-04", "end":"2017-06", "buy_price":0, "sell_price":0, "earning_ratio":0}
+                {"buy":{
+                    "price":0,
+                    "date":"2017-03-02",
+                    "st_date":"2017-03"
+                },
+                "sell":{
+                    "price":0,
+                    "date":"2017-06-01",
+                    "end_date":"2017-06"
+                },
+                earning_ratio:0},
+                {...},
+                {...},
+                {...}
             ]
         }"""
         self.assertEqual(res["code"], code)
-        self.assertEqual(res["total"]["st"], st_date)
-        self.assertEqual(res["total"]["end"], "2017-06")
+        self.assertEqual(res["total"]["buy"]["st_date"], st_date)
+        self.assertEqual(res["total"]["sell"]["end_date"], "2017-06")
 
-        self.assertEqual(res["er_list"][0]["st"], st_date)
-        self.assertEqual(res["er_list"][0]["end"], "2017-03")
+        self.assertEqual(res["er_list"][0]["buy"]["st_date"], st_date)
+        self.assertEqual(res["er_list"][0]["sell"]["end_date"], "2017-03")
 
     def test_calc_get_er(self):
         res = self.calc._get_er(100, 110)

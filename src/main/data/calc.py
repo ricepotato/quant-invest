@@ -64,14 +64,21 @@ class Calc:
         end_price = self.price_data.get_price(code, end_date)
         buy_price = st_price["close"]
         sell_price = end_price["close"]
-        st_datetime = st_price["date"]
-        end_datetime = end_price["date"]
         er = self._get_er(buy_price, sell_price)
 
-        return {"st":st_date, "st_datetime":st_datetime,
-                "end_datetime":end_datetime, "end":end_date,
-                "buy_price":buy_price, "sell_price":sell_price,
-                "earning_ratio":er}
+        return {
+            "buy":{
+                "price":st_price["close"],
+                "date":st_price["date"],
+                "st_date":st_date
+            },
+            "sell":{
+                "price":end_price["close"],
+                "date":end_price["date"],
+                "end_date":end_date
+            },
+            "earning_ratio":er
+        }
 
     def _get_er(self, buy_price, sell_price):
         """ 수익률 계산 """
