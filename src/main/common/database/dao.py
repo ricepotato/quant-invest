@@ -284,3 +284,12 @@ class PriceDao(Dao):
                         price_dict["volume"], price_dict["change"])
         return True
         
+class ERBoardDao(Dao):
+    def __init__(self, db):
+        Dao.__init__(self, db)
+        self.model = ERBoard
+
+    def insert(self, code: str, st_date: str, hold: int, period: int, group: int=None) -> int:
+        obj = self.model(code, st_date, hold, period, group=group)
+        obj = self._insert(obj)
+        return obj.id

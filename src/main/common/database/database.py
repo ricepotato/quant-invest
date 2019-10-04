@@ -209,6 +209,8 @@ class Price(Base, Serializer):
     volume = Column(Integer) # 거래량
     change = Column(Integer) # 등락
 
+    UniqueConstraint(code, date, name="unique_code_date")
+
     def __init__(self, code, date, open, high, low, close, volume, change):
         self.code = code
         self.date = date
@@ -218,8 +220,6 @@ class Price(Base, Serializer):
         self.close = close
         self.volume = volume
         self.change = change
-
-    UniqueConstraint(code, date, name="unique_code_date")
 
     def __repr__(self):
         return "<Price('%s', '%s')>" % (self.code, str(self.close))
@@ -235,6 +235,14 @@ class ERBoard(Base, Serializer):
     group = Column(SMALLINT) # group
 
     Index("group_idx", group)
+    
+    def __init__(self, code: str, st_date: str, hold: int, period: int, 
+                 group: int=None) -> int:
+        self.code = code
+        self.st_date = st_date
+        self.hold = hold
+        self.period = period
+        self.group = group
 
     def __repr__(self):
         return "<ERBoard('%s')>" % (self.code)
