@@ -2,10 +2,12 @@
 import sys
 import json
 import importlib
+from functools import wraps
 
 from .exc import *
 
 def handle_invalid_init_args(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
