@@ -30,8 +30,8 @@ class ERData:
             return []
 
         def _rs_func(item):
-            res = self.calc.get_list(item["code"], item["st_date"], 
-                                     item["hold"], item["period"])
+            res = self.calc.get_result(item["code"], item["st_date"], 
+                                       item["hold"], item["period"])
             res["period"] = item["period"]
             res["hold"] = item["hold"]
             comp_res = self.comp_dao.select(code=item["code"])
