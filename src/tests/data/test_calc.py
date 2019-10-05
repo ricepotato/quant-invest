@@ -8,7 +8,7 @@ cur_path = os.path.dirname(__file__)
 approot_path = os.path.abspath(os.path.join(cur_path, "..", "..", "main"))
 sys.path.append(approot_path)
 
-from data.calc import DateCalc
+from data.calc import *
 from common.appctx import AppContext
 
 log = logging.getLogger("qi.tests.calc")
@@ -25,44 +25,63 @@ class CalcTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def test_calc_comp(self):
+
+        self.assertEqual(DateCalc("2019-01"), DateCalc("2019-01"))
+        self.assertTrue(DateCalc("2019-01") > DateCalc("2018-12"))
+        self.assertTrue(DateCalc("2019-03") > DateCalc("2019-02"))
+        self.assertTrue(DateCalc("2019-03") < DateCalc("2019-05"))
+        self.assertTrue(DateCalc("2018-10") < DateCalc("2019-05"))
+
     def test_date_calc(self):
         dc = DateCalc("2018-01")
-        date_res = dc.add(12)
-        self.assertEqual(date_res, "2019-01")
-        date_res = dc.add(1)
-        self.assertEqual(date_res, "2018-02")
-        date_res = dc.add(6)
-        self.assertEqual(date_res, "2018-07")
-        date_res = dc.add(24)
-        self.assertEqual(date_res, "2020-01")
-        date_res = dc.add(25)
-        self.assertEqual(date_res, "2020-02")
+        date_res = dc + 12
+        self.assertEqual(str(date_res), "2019-01")
+        date_res = dc + 1
+        self.assertEqual(str(date_res), "2018-02")
+        date_res = dc + 6
+        self.assertEqual(str(date_res), "2018-07")
+        date_res = dc + 24
+        self.assertEqual(str(date_res), "2020-01")
+        date_res = dc + 25
+        self.assertEqual(str(date_res), "2020-02")
 
         date_res = dc + 12
         self.assertEqual(str(date_res), "2019-01")
 
     def test_calc_invalid(self):
+        """ 보유기간이 전체기간보다 길다 """
         code = "000660"
         hold = 12
         st_date = "2017-01"
         period = 10
-        res = self.calc.get_list(code, st_date, hold, period)
-        self.assertIsNotNone(res)
+        #with self.assertRaises(DateRangeError) as context:
+        res = self.calc.get_result(code, st_date, hold, period)
+        self.assertIsNotNone(res["error"])
 
-    def test_calc_long_period(self):
+    def test_calc_invalid_period1(self):
+        """ period 값이 크다.현재 날짜보다 크다 """
         code = "000660"
-        hold = 12
-        st_date = "2017-01"
-        period = 48
-        with self.assertRaises(TypeError) as context:
-            res = self.calc.get_list(code, st_date, hold, period)
+        hold = 6
+        period = 10
+        st_date = "2019-01"
+        res = self.calc.get_result(code, st_date, hold, period)
+        self.assertIsNotNone(res["error"])
+
+    def test_calc_invalid_st_date(self):
+        code = "000660"
+        hold = 6
+        period = 10
+        st_date = "2199-01"
+        res = self.calc.get_result(code, st_date, hold, period)
+        self.assertIsNotNone(res["error"])
 
     def test_calc(self):
         code = "000660"
         hold = 2
         st_date = "2017-01"
         period = 5
-        res = self.calc.get_list(code, st_date, hold, period)
+        res = self.calc.get_result(code, st_date, hold, period)
         """res_dest = {
             "code":code,
             "avg_er":0,
