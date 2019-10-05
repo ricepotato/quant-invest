@@ -34,9 +34,15 @@ class ERData:
                                        item["hold"], item["period"])
             res["period"] = item["period"]
             res["hold"] = item["hold"]
+            res["id"] = item["id"]
             comp_res = self.comp_dao.select(code=item["code"])
             if comp_res:
                 res["comp_name"] = comp_res[0].name
             return res
                 
         return list(map(lambda item: _rs_func(item), res))
+
+    def delete(self, id):
+        """ er borad data 삭제 """
+        return self.er_dao.delete(id=id)
+
