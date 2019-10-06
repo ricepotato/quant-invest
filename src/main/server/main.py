@@ -15,7 +15,7 @@ log.addHandler(logging.StreamHandler())
 log = logging.getLogger("qi.server.main")
 
 def main():
-    server.run(port=8091)
+    server.run(port=8089)
 
 if __name__ == "__main__":
     main()
