@@ -49,6 +49,16 @@ class CalcTestCase(unittest.TestCase):
         date_res = dc + 12
         self.assertEqual(str(date_res), "2019-01")
 
+    def test_calc_no_data(self):
+        """ 가격정보 없는 code, 값 """
+        code = "201820"
+        st_date = "2017-06"
+        hold = 6
+        period = 12
+        res = self.calc.get_result(code, st_date, hold, period)
+        self.assertIsNotNone(res["error"])
+
+
     def test_calc_invalid(self):
         """ 보유기간이 전체기간보다 길다 """
         code = "000660"

@@ -116,8 +116,12 @@ class Calc:
                                  f" is later than now({now_date})")
 
     def _get_item(self, code, st_date, end_date):
+        """ 가격 정보 객체 생성 """
         st_price = self.price_data.get_price(code, st_date)
         end_price = self.price_data.get_price(code, end_date)
+        # 가격 데이터 없음
+        if st_price is None or end_price is None:
+            raise DateRangeError(f"get price error. code={code}")
         buy_price = st_price["close"]
         sell_price = end_price["close"]
         er = self._get_er(buy_price, sell_price)
