@@ -5,33 +5,22 @@ import sys
 import logging
 
 from resources.stock import Stock
+from resources.er import ERBoard
 from common.apisrv import APIServer
 from common.logger import LogCfg
 from common.appctx import AppContext
 
 log = logging.getLogger('qi.server.app')
 
-ctx = {
-    "dao":{
-        "class":"dao.StockDao"
-    },
-    "rank":{
-        "class":"data.rank.Rank"
-    },
-    "stock_db":{
-        "class":"stdata.StockDbData",
-        "properties":{
-            "dao":{"bean":"dao"},
-            "rank":{"bean":"rank"}
-        }
-    }
-}
-app_ctx = AppContext(ctx)
-app_ctx.get_bean("stock_db")
+ctx_json = os.path.join(os.path.dirname(__file__), "ctx.json")
+app_ctx = AppContext.from_jsonfile(ctx_json)
 st_data = app_ctx.get_bean("stock_db")
-rck = {"st_data":st_data}
+er_data = app_ctx.get_bean("er_data")
+rck = {"st_data":st_data, "er_data":er_data}
 
 server = APIServer()
 app = server.app
 server.add_resource(Stock, "/stock/<string:market>/<string:year>", 
-                     resource_class_kwargs=rck)
+                    resource_class_kwargs=rck)
+server.add_resource(ERBoard, "/er/<int:id>", "/er",
+                    resource_class_kwargs=rck)

@@ -1,10 +1,13 @@
-
+#-*- coding: utf-8 -*-
 import sys
+import json
 import importlib
+from functools import wraps
 
 from .exc import *
 
 def handle_invalid_init_args(func):
+    @wraps(func)
     def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
@@ -16,6 +19,13 @@ def handle_invalid_init_args(func):
 class AppContext(object):
     def __init__(self, ctx):
         self.ctx = ctx
+
+    @staticmethod
+    def from_jsonfile(path):
+        with open(path, "r") as f:
+            json_text = f.read()
+        ctx_dict = json.loads(json_text)
+        return AppContext(ctx_dict)
 
     def get_bean(self, name):
         ctx = self.get_ctx(name)

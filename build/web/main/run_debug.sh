@@ -6,6 +6,6 @@ docker run -it \
 --hostname=dockerhost-web \
 --rm \
 -e MODE=DEV \
--p 80:80 \
+-p 8090:80 \
 --net=qinet \
 qi-web:latest

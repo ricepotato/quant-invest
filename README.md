@@ -23,6 +23,12 @@ quant invest project
  주식 가격만큼을 회사가 벌어들이기 위해 필요한 시간이 1년이라는 의미이다.
 
  적정 주가(기업의 가치) = 주당 예상순이익 x 주가수익비율(PER)
+ 
+### PSR(Price Sales Ratio) : 주가 매출 비율
+  어떤 주식의 가격이 주당 매출액에 비해 높을수록 PSR은 1.0배 이상을 기록하게 됩니다. 
+
+  반면 현재 주가가주당 매출액보다 낮다면 PSR은 1.0배 미만을 밑돌게 됩니다.
+  
 
 ### EBITDA(Earning Before Interest, Tax, Deprecation and Amortization) : 에비타(EBITDA) = 영업이익 + 감가상각비 등 비현금성 비용 + 제세금
  세전 영업이익에 감가상각비 등 비현금 비용을 합한 것, 세전 영업 기준 영업 현금 흐름을 나타냄

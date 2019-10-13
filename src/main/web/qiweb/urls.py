@@ -8,6 +8,7 @@ import django.contrib.auth.views
 
 import app.forms
 import app.views
+import calc.views
 
 import stock.views
 
@@ -23,6 +24,10 @@ urlpatterns = [
     url(r'^about$', app.views.about, name='about'),
     url(r'^stock$', stock.views.index, name='stock'),
     url(r'^api/stock$', stock.views.api_stock, name='api_stock'),
+    url(r'^calc$', calc.views.index, name='calc'),
+    url(r'^calc/list$', calc.views.calc_list, name='calc_list'),
+    url(r'^calc/delete/(?P<id>[0-9]+)', calc.views.calc_delete, name="calc_delete"),
+    url(r'^api/calc$', calc.views.api_calc, name="api_calc"),
     url(r'^login/$',
         django.contrib.auth.views.login,
         {

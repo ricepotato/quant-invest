@@ -13,3 +13,23 @@ class QIApi(APIBase):
         params = {"min_mrkcap":min_mrkcap}
         return self.get(resource, params)
 
+    def get_er(self, group=None):
+        if group is None:
+            resource = "er"
+        else:
+            resource = f"er/{group}"
+        return self.get(resource)
+
+    def post_er(self, code, st_date, hold, period, group=None):
+        resource = "er"
+        data = {"code":code, "st_date":st_date, 
+                "hold":hold, "period":period}
+        if group is not None:
+            data["group"] = group
+        return self.post(resource, data=data)
+
+    def delete_er(self, id):
+        resource = f"er/{id}"
+        return self.delete(resource)
+
+

@@ -1,0 +1,85 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="{% static 'app/scripts/jquery-3.4.1.min.js' %}"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="{% static 'app/scripts/calc.js' %}"></script>
+<main role="main">
+    <div class="row">
+        <div class="col-md-12 order-md-1">
+            <h4 class="mb-3">수익률 계산기</h4>
+            <form class="needs-validation" novalidate="">
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <label for="txt_comp">종목코드/이름 검색</label>
+                    <div class="input-group">
+                        <input type="text" id="txt_comp" class="form-control" placeholder="종목코드/이름">
+                        <div class="input-group-append">
+                        <button type="button" class="btn btn-primary">검색</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="opt_hold">보유기간(개월)</label>
+                    <select  class="form-control" id="opt_hold">
+                        <option value="12">12 개월</option>
+                        <option value="11">11 개월</option>
+                        <option value="10">10 개월</option>
+                        <option value="9">9 개월</option>
+                        <option value="8">8 개월</option>
+                        <option value="7">7 개월</option>
+                        <option selected value="6">6 개월</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label for="txt_period">전체 기간(개월)</label>
+                    <input type="number" id="txt_period" class="form-control" placeholder="개월">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <label for="st_period_yaer">시작년도</label>
+                    <select class="custom-select d-block w-100" id="st_period_yaer" required="">
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                        <option value="2015">2015</option>
+                        <option value="2014">2014</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="st_period_mon">월</label>
+                    <select class="custom-select d-block w-100" id="st_period_mon" required="">
+                        <option value="01">1</option>
+                        <option value="02">2</option>
+                        <option value="03">3</option>
+                        <option value="04">4</option>
+                        <option value="05">5</option>
+                        <option value="06">6</option>
+                        <option value="07">7</option>
+                        <option value="08">8</option>
+                        <option value="09">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                </div>
+            </div>
+           
+            <button class="btn btn-primary btn-lg btn-block" id="btn_add_er" type="button">종목추가</button>
+            <hr class="mb-4">
+            <div id="calc-list-container">
+                
+            </div>
+            <hr class="mb-4">
+        </div>
+    </div>
+</main>
+
+
+{% endblock %}

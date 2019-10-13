@@ -11,4 +11,7 @@ RUN mkdir /app
 ADD requirements.txt /app
 RUN pip3 install --upgrade pip
 RUN pip3 install -r /app/requirements.txt
+RUN pip3 install numpy
+RUN pip3 install pandas
+RUN pip3 install finance-datareader==0.8.0
 WORKDIR /app/server

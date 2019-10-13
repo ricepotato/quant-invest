@@ -5,7 +5,8 @@ import json
 import logging
 
 from contextlib import contextmanager
-from sqlalchemy import create_engine, Column, Integer, String, FLOAT, DATETIME
+from sqlalchemy import (create_engine, Column, Integer, String, 
+                        FLOAT, DATETIME, SMALLINT)
 from sqlalchemy import Index, UniqueConstraint
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
@@ -201,15 +202,17 @@ class Price(Base, Serializer):
     id = Column(Integer, primary_key=True) # pkey
     code = Column(String(20)) # 종목 코드
     date = Column(String(10), nullable=False)
-    open = Column(FLOAT) # 시가
-    high = Column(FLOAT) # 고가
-    low = Column(FLOAT) # 저가
-    close = Column(FLOAT) # 종가
-    volume = Column(FLOAT) # 거래량
-    change = Column(FLOAT) # 등락
+    open = Column(Integer) # 시가
+    high = Column(Integer) # 고가
+    low = Column(Integer) # 저가
+    close = Column(Integer) # 종가
+    volume = Column(Integer) # 거래량
+    change = Column(Integer) # 등락
+
+    UniqueConstraint(code, date, name="unique_code_date")
 
     def __init__(self, code, date, open, high, low, close, volume, change):
-        self.code
+        self.code = code
         self.date = date
         self.open = open
         self.high = high
@@ -220,6 +223,29 @@ class Price(Base, Serializer):
 
     def __repr__(self):
         return "<Price('%s', '%s')>" % (self.code, str(self.close))
+
+class ERBoard(Base, Serializer):
+    __tablename__ = "er_board"
+
+    id = Column(Integer, primary_key=True) # pkey
+    code = Column(String(20)) # 종목 코드
+    st_date = Column(String(10), nullable=False) # 시작 날짜
+    hold = Column(SMALLINT, nullable=False) # 보유기간
+    period = Column(SMALLINT, nullable=False) # 전체기간
+    group = Column(SMALLINT) # group
+
+    Index("group_idx", group)
+    
+    def __init__(self, code: str, st_date: str, hold: int, period: int, 
+                 group: int=None) -> int:
+        self.code = code
+        self.st_date = st_date
+        self.hold = hold
+        self.period = period
+        self.group = group
+
+    def __repr__(self):
+        return "<ERBoard('%s')>" % (self.code)
 
 class Singleton(type):
     """Singleton.
@@ -259,6 +285,7 @@ class Database(object):
             session.close()
 
     def create_all(self):
+        """ creates all tables. """
         try:
             Base.metadata.create_all(self.engine)
         except SQLAlchemyError as e:

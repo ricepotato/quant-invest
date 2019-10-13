@@ -13,7 +13,6 @@ from django.http import HttpResponse, JsonResponse
     }, json_dumps_params = {'ensure_ascii': True})"""
 
 from api import QIApi
-# Create your views here.
 
 log = logging.getLogger("qi.web" + __name__)
 
