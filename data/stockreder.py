@@ -48,6 +48,9 @@ class SCReader(object):
             except ValueError as e:
                 log.warning("_get_col value error. %s line=%s", e, line)
                 continue
+            except IndexError as e:
+                log.warning("_get_col Index error. %s line=%s", e, line)
+                continue
 
         return res
 

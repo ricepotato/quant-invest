@@ -42,7 +42,7 @@ def cmp_func(x, y):
         else:
             return 0
             
-class TestRank(unittest.TestCase):
+class RankTestCase(unittest.TestCase):
     def setUp(self):
         self.data = [
             {"name":"st1", "roa":0.5, "per":10.5}, # roa_rank 4 per_rank 5 total_rank 9
@@ -160,6 +160,3 @@ class TestRank(unittest.TestCase):
         self.assertIsNotNone(res_data)
         self.assertEqual(res_data[0]["name"], "st4")
         self.assertEqual(res_data[0]["total_rank"], 3)
-    
-if __name__ == "__main__":
-    unittest.main()

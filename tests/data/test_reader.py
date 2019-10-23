@@ -4,20 +4,13 @@ import sys
 import unittest
 import logging
 
-cur_path = os.path.dirname(__file__)
-base_path = os.path.join(cur_path, "..", "data")
-comm_path = os.path.join(cur_path, "..", "common")
-
-sys.path.append(base_path)
-sys.path.append(comm_path)
-
-from stockreder import SCReader
-from logger.logcfg import LogCfg
+from data.stockreder import SCReader
 
 log = logging.getLogger("qi.tests.reader")
 
 def make_test_csv():
-    csv_path = os.path.join(cur_path, "test.csv")
+    #csv_path = os.path.join(cur_path, "test.csv")
+    csv_path = "test.csv"
     with open(csv_path, "w", encoding="UTF8") as f:
         f.write(u"번호,종목코드,기업명,업종코드,업종,상장주식수(주),자본금(원),액면가(원),통화구분,대표전화,주소,총카운트")
         f.write("\r\n")
@@ -25,7 +18,7 @@ def make_test_csv():
 
     return csv_path
 
-class TestReader(unittest.TestCase):
+class SCReaderTestCase(unittest.TestCase):
     def setUp(self):
         log.info("setUp")
         self.reader = SCReader()
@@ -34,13 +27,13 @@ class TestReader(unittest.TestCase):
         log.info("tearDown")
 
     def test_read_kosdaq(self):
-        kosdaq_csv = os.path.join(base_path, "KOSDAQ.csv")
+        kosdaq_csv = os.path.join("data", "KOSDAQ.csv")
         res = self.reader.read_file(kosdaq_csv)
         self.assertEqual(res[0]["num"], 1)
         log.info("kosdaq len=%d", len(res))
 
     def test_read_kospi(self):
-        kospi_csv = os.path.join(base_path, "KOSPI.csv")
+        kospi_csv = os.path.join("data", "KOSPI.csv")
         res = self.reader.read_file(kospi_csv)
         self.assertEqual(res[0]["num"], 1)
         log.info("kospi len=%d", len(res))
