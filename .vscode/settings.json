@@ -1,0 +1,11 @@
+{
+    "python.pythonPath": "/Users/seogjunsagong/envs/qi/bin/python",
+    "python.testing.unittestEnabled": true,
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "tests/data",
+        "-p",
+        "test_*.py"
+    ]
+}
