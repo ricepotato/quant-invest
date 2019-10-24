@@ -4,11 +4,7 @@ import sys
 import unittest
 import logging
 
-cur_path = os.path.dirname(__file__)
-approot_path = os.path.abspath(os.path.join(cur_path, "..", "..", "main"))
-sys.path.append(approot_path)
-
-from data.calc import *
+from common.utils.calc import *
 from common.appctx import AppContext
 
 log = logging.getLogger("qi.tests.calc")
@@ -18,7 +14,7 @@ log = logging.getLogger("qi.tests.calc")
 
 class CalcTestCase(unittest.TestCase):
     def setUp(self):
-        ctx_json = os.path.join(approot_path, "ctx.json")
+        ctx_json = os.path.join("conf", "ctx.json")
         appctx = AppContext.from_jsonfile(ctx_json)
         self.calc = appctx.get_bean("calc")
 

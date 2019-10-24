@@ -5,11 +5,6 @@ import sys
 import unittest
 import logging
 
-cur_path = os.path.dirname(__file__)
-base_path = os.path.join(cur_path, "..")
-
-sys.path.append(base_path)
-
 from common.database.database import Database
 from common.database.dao import *
 
@@ -111,12 +106,6 @@ class TestDatabase(unittest.TestCase):
 
         res = mrk_dao.select(name="C").count()
         self.assertEqual(res, 1)
-
-
-
-        
-
-
 
 if __name__ == "__main__":
     unittest.main()

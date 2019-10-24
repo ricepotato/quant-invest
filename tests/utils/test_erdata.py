@@ -4,10 +4,6 @@ import sys
 import unittest
 import logging
 
-cur_path = os.path.dirname(__file__)
-approot_path = os.path.abspath(os.path.join(cur_path, "..", "..", "main"))
-sys.path.append(approot_path)
-
 from common.appctx import AppContext
 
 log = logging.getLogger("qi")
@@ -17,7 +13,7 @@ log = logging.getLogger("qi.tests.erdata")
 
 class CalcTestCase(unittest.TestCase):
     def setUp(self):
-        ctx_json = os.path.join(approot_path, "ctx.json")
+        ctx_json = os.path.join("conf", "ctx.json")
         appctx = AppContext.from_jsonfile(ctx_json)
         self.er_data = appctx.get_bean("er_data")
         self.er_dao = appctx.get_bean("erboard_dao")

@@ -1,19 +1,19 @@
 {
     "stock_dao":{
-        "class":"dao.StockDao"
+        "class":"common.database.dao.StockDao"
     },
     "rank":{
-        "class":"data.rank.Rank"
+        "class":"common.utils.rank.Rank"
     },
     "stock_db":{
-        "class":"stdata.StockDbData",
+        "class":"server.stdata.StockDbData",
         "properties":{
             "dao":{"bean":"stock_dao"},
             "rank":{"bean":"rank"}
         }
     },
     "price_data":{
-        "class":"data.price.PriceData",
+        "class":"common.utils.price.PriceData",
         "properties":{
             "comp_dao":{"bean":"comp_dao"},
             "price_dao":{"bean":"price_dao"}
@@ -38,7 +38,7 @@
         ]
     },
     "er_data":{
-        "class":"data.erdata.ERData",
+        "class":"common.utils.erdata.ERData",
         "properties":{
             "er_dao":{"bean":"erboard_dao"},
             "calc":{"bean":"calc"},
@@ -49,7 +49,7 @@
         "class":"common.database.Database"
     },
     "calc":{
-        "class":"data.calc.Calc",
+        "class":"common.utils.calc.Calc",
         "properties":{
             "price_data":{"bean":"price_data"}
         }

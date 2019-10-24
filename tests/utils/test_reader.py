@@ -4,7 +4,7 @@ import sys
 import unittest
 import logging
 
-from data.stockreder import SCReader
+from common.utils.stockreder import SCReader
 
 log = logging.getLogger("qi.tests.reader")
 

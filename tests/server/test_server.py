@@ -8,11 +8,6 @@ from unittest.mock import Mock, call
 from flask import Flask, jsonify
 from flask_restful import Resource, Api
 
-cur_path = os.path.join(os.path.dirname(__file__))
-base_path = os.path.abspath(os.path.join(cur_path, "..", "..", "main"))
-
-sys.path.append(base_path)
-
 from server.resources.stock import Stock
 from server.resources.er import ERBoard
 

@@ -1,18 +1,12 @@
+#-*- coding: utf-8 -*-
 
 import os
 import sys
 import logging
 
-cur_path = os.path.dirname(__file__)
-comm_path = os.path.join(cur_path, "..")
-
-sys.path.append(comm_path)
-
-from database.database import *
+from . import Market, FinancialReport, Company
 
 log = logging.getLogger("qi.common.database.stock_dao")
-
-from database import *
 
 def to_dict(item):
     return {

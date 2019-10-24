@@ -4,16 +4,9 @@ import sys
 import unittest
 import logging
 
-cur_path = os.path.dirname(__file__)
-base_path = os.path.join(cur_path, "..", "data")
-comm_path = os.path.join(cur_path, "..", "common")
-
-sys.path.append(base_path)
-sys.path.append(comm_path)
-
-from stocksto import StockDbStore
-from database.dao import MarketDao, CategoryDao, CompanyDao, FinancialReportDao as FRDao
-from database.database import Database
+from common.utils.stocksto import StockDbStore
+from common.database.dao import MarketDao, CategoryDao, CompanyDao, FinancialReportDao as FRDao
+from common.database import Database
 
 log = logging.getLogger("qi.tests.stocksto")
 

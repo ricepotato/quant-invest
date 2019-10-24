@@ -5,11 +5,6 @@ import sys
 import unittest
 import logging
 
-cur_path = os.path.dirname(__file__)
-base_path = os.path.join(cur_path, "..")
-
-sys.path.append(base_path)
-
 from common.database.database import Database
 from common.database.dao import *
 from common.database.stock_dao import *
@@ -55,17 +50,6 @@ class TestStockDao(unittest.TestCase):
         self.assertIsNotNone(res)
         self.assertEqual(res[0]["comp_name"], "안랩")
         self.assertEqual(res[0]["per"], 20.34)
-
-
-
-
-        
-
-
-
-        
-
-
 
 if __name__ == "__main__":
     unittest.main()

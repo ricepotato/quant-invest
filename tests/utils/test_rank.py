@@ -4,9 +4,12 @@ import sys
 import unittest
 import logging
 
-from data.rank import *
+from common.utils.rank import Rank
 
 log = logging.getLogger("qi.tests.data.rank")
+
+DESC = 1
+ASC = -1
 
 def cmp_to_key(mycmp):
     'Convert a cmp= function into a key= function'

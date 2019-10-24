@@ -4,17 +4,15 @@ import sys
 import unittest
 import logging
 
-cur_path = os.path.dirname(__file__)
-base_path = os.path.abspath(os.path.join(cur_path, ".."))
-
-sys.path.append(base_path)
-
-from crawler import CompGuideCrawler
+from common.utils.crawler import CompGuideCrawler
 
 log = logging.getLogger("qi")
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 log = logging.getLogger("qi.tests.crawler")
+
+cur_path = os.path.dirname(__file__)
+bin_path = os.path.join(cur_path, "bin")
 
 class TestCrawler(unittest.TestCase):
     def setUp(self):
@@ -24,7 +22,6 @@ class TestCrawler(unittest.TestCase):
         pass
 
     def _get_text(self, comp_code):
-        bin_path = os.path.join(cur_path, "bin")
         html_filepath = os.path.join(bin_path, f"{comp_code}.html")
         with open(html_filepath, "r") as f:
             text = f.read()
@@ -54,6 +51,7 @@ class TestCrawler(unittest.TestCase):
         self.assertEqual(res["2018-12"]["per"], "N/A")
 
     def test_crawler(self):
+        self.crawler.reader.data_path = bin_path
         fr_data = self.crawler.get_fr_data("053800")
         log.info(fr_data)
 

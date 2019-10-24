@@ -4,12 +4,7 @@ import sys
 import logging
 import unittest
 
-cur_path = os.path.dirname(__file__)
-base_path = os.path.join(cur_path, "..")
-
-sys.path.append(base_path)
-
-from common.logger.logger import LogCfg, qi_logger
+from common.logger import LogCfg, qi_logger 
 
 log = logging.getLogger("qi.tests.logger")
 

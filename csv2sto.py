@@ -5,8 +5,8 @@ import json
 import logging
 
 import common.logger.logcfg
-from data.stockreder import SCReader
-from data.stocksto import StockDbStore
+from common.utils.stockreder import SCReader
+from common.utils.stocksto import StockDbStore
 from common.database import *
 
 log = logging.getLogger("qi.data.csv2sto")

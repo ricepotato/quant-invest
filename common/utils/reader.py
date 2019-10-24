@@ -19,7 +19,7 @@ class CompFileReader:
         return text
 
     def _try_decode(self, data):
-        encodings = ["utf-8", "ascii", "ansi", "utf-16"]
+        encodings = ["utf-8", "ascii", "utf-16"]
         for encoding in encodings:
             try:
                 text = data.decode(encoding)

@@ -3,11 +3,8 @@ import os
 import sys
 import logging
 import datetime
+import httpretty
 import unittest
-
-cur_path = os.path.dirname(__file__)
-base_path = os.path.abspath(os.path.join(cur_path, "..", "..", "main"))
-sys.path.append(base_path)
 
 from common.api import QIApi
 

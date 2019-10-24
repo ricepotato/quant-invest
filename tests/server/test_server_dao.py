@@ -5,11 +5,6 @@ import sys
 import unittest
 import logging
 
-cur_path = os.path.dirname(__file__)
-base_path = os.path.join(cur_path, "..")
-
-sys.path.append(base_path)
-
 log = logging.getLogger("qi.tests.server.dao")
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)

@@ -4,16 +4,8 @@ import sys
 import unittest
 import logging
 
-cur_path = os.path.dirname(__file__)
-base_path = os.path.join(cur_path, "..", "data")
-comm_path = os.path.join(cur_path, "..", "common")
-
-sys.path.append(base_path)
-sys.path.append(comm_path)
-
 from csv2sto import Csv2Sto
-from stocksto import StockStore
-from logger.logcfg import LogCfg
+from common.utils.stocksto import StockStore
 
 log = logging.getLogger("qi.tests.csv2sto")
 
@@ -48,10 +40,9 @@ class TestCsv2db(unittest.TestCase):
     def test_c2d(self):
         log.info("c2s")
         market = "KOSDAQ"
-        market_csv = os.path.join(base_path, "{}.csv".format(market))
+        market_csv = os.path.join("data", "{}.csv".format(market))
         res = self.c2s.c2s(market, market_csv)
         self.assertEqual(res, 3)
-
     
 if __name__ == "__main__":
     unittest.main()
