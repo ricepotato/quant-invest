@@ -9,7 +9,7 @@ base_path = os.path.join(cur_path, "..")
 
 sys.path.append(base_path)
 
-from common.utils.crawler import CompFileReader
+from qi.utils.crawler import CompFileReader
 
 log = logging.getLogger("qi.tests.textreader")
 

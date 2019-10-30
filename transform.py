@@ -1,9 +1,10 @@
+#-*- coding: utf-8 -*-
 import os
 import sys
 import logging
 
-from common.logger import LogCfg
-from common.appctx import AppContext
+import qi.logger.logcfg
+from qi.appctx import AppContext
 from multiprocessing import Pool
 
 log = logging.getLogger("qi.transform")
@@ -11,22 +12,22 @@ log.setLevel(logging.DEBUG)
 
 ctx = {
     "db":{
-        "class":"common.database.Database"
+        "class":"qi.database.Database"
     },
     "fr_dao":{
-        "class":"common.database.FinancialReportDao",
+        "class":"qi.database.FinancialReportDao",
         "init_args":[{"bean":"db"}]
     },
     "company_dao":{
-        "class":"common.database.CompanyDao",
+        "class":"qi.database.CompanyDao",
         "init_args":[{"bean":"db"}]
     },
     "category_dao":{
-        "class":"common.database.CategoryDao",
+        "class":"qi.database.CategoryDao",
         "init_args":[{"bean":"db"}]
     },
     "mrk_dao":{
-        "class":"common.database.MarketDao",
+        "class":"qi.database.MarketDao",
         "init_args":[{"bean":"db"}]
     },
     "collector":{

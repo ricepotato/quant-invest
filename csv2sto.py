@@ -4,10 +4,10 @@ import sys
 import json
 import logging
 
-import common.logger.logcfg
-from common.utils.stockreder import SCReader
-from common.utils.stocksto import StockDbStore
-from common.database import *
+import qi.logger.logcfg
+from qi.utils.stockreder import SCReader
+from qi.utils.stocksto import StockDbStore
+from qi.database import *
 
 log = logging.getLogger("qi.data.csv2sto")
 

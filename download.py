@@ -3,10 +3,10 @@ import os
 import sys
 import logging
 
-from common.logger import LogCfg
-from common.database import Database
-from common.database.dao import *
-from crawler.downloader import CompGuideDownloader
+import qi.logger.logcfg
+from qi.database import Database
+from qi.database.dao import *
+from qi.utils.downloader import CompGuideDownloader
 
 log = logging.getLogger("qi.data.download")
 log.setLevel(logging.DEBUG)

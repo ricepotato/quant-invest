@@ -3,9 +3,8 @@ import os
 import sys
 import logging
 
-from common.logger import LogCfg
-from common.database.database import Database
-from common.database.dao import *
+import qi.logger.logcfg
+from qi.database import Database
 
 log = logging.getLogger("qi.data.dbinit")
 
@@ -14,6 +13,7 @@ def init_database():
     Database().create_all()
 
 def main():
+    """ database table 을 삭제하고 새로 생성함 """
     log.info("dbinit main.")
     init_database()
 
