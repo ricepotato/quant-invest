@@ -13,7 +13,7 @@ class Installer:
     def __init__(self, args):
         self.args = args
         config = configparser.ConfigParser()
-        config.read('conf.ini')
+        config.read('package.ini')
         self.version = config["qi"]["version"]
 
     def setup(self):

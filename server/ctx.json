@@ -53,5 +53,11 @@
         "properties":{
             "price_data":{"bean":"price_data"}
         }
+    },
+    "factory":{
+        "class":"qi.database.DBFactory",
+        "properties":{
+            "conf_path":"conf/database.ini"
+        }
     }
 }

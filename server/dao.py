@@ -1,9 +1,10 @@
 
-from qi.database import Database, Company, Market, FinancialReport
+from qi.database import DBFactory
+from schemas import FinancialReport, Company, Market
 
 class StockDao:
     def __init__(self):
-        self.db = Database()
+        self.db = DBFactory.from_conf("conf/database.ini")
 
     def get_data(self, market, **kwargs):
         with self.db.session_scope() as s:

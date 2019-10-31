@@ -1,9 +1,6 @@
 #-*- coding: utf-8 -*-
-#from .database import (Database, Market, Category, Company, 
-#                       FinancialReport, ERBoard)
-#from .dao import (FinancialReportDao, CompanyDao, CategoryDao,
-#                  MarketDao, PriceDao, ERBoardDao)
 
 from .factory import DBFactory
+from .database import Database
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"

@@ -5,11 +5,21 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: server debug",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/server"
+        },
+        {
             "name": "Python: Current Unittest File",
             "type": "python",
             "request": "launch",
             "module": "unittest",
-            "args": ["${file}"]
+            "args": [
+                "${file}"
+            ]
         },
         {
             "name": "Python: Current File",

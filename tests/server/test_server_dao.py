@@ -9,19 +9,20 @@ log = logging.getLogger("qi.tests.server.dao")
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.DEBUG)
 
+from qi.appctx import AppContext
 from server.dao import StockDao
 
 class ServerDaoTestCase(unittest.TestCase):
     def setUp(self):
-        self.dao = StockDao()
+        appctx = AppContext.from_jsonfile("conf/ctx.json")
+        factory = appctx.get_bean("factory")
+        db = factory.get_db()
 
     def tearDown(self):
         pass
 
     def test_dao(self):
-        res = self.dao.get_data("KOSDAQ", year="2018")
-        for item in res:
-            log.info(item)
+        pass
 
 if __name__ == "__main__":
     unittest.main()

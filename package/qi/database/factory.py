@@ -11,6 +11,9 @@ from .database import Database
 log = logging.getLogger("qi.database.factory")
 
 class DBFactory:
+    def __init__(self):
+        self.conf_path = None
+
     @staticmethod
     def from_conf(conf_path):
         config = configparser.ConfigParser()
@@ -26,5 +29,5 @@ class DBFactory:
         engine = create_engine(conn_str, convert_unicode=False, echo=False)
         return Database(Base, engine)
 
-
-        
+    def get_db(self):
+        return DBFactory.from_conf(self.conf_path)
