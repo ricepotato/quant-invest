@@ -4,11 +4,10 @@ import os
 import sys
 import logging
 
+from qi.apisrv import APIServer
+from qi.appctx import AppContext
 from resources.stock import Stock
 from resources.er import ERBoard
-from common.apisrv import APIServer
-from common.logger import LogCfg
-from common.appctx import AppContext
 
 log = logging.getLogger('qi.server.app')
 

@@ -7,5 +7,5 @@ src/package/build/*
 src/package/dist/*
 build/server/main/*.tar.gz
 *.log
-qi/dist/*
-qi/qi.egg-info/*
+package/qi.egg-info/*
+package/dist/*

@@ -3,10 +3,7 @@ import os
 import sys
 import logging
 
-cur_path = os.path.dirname(__file__)
-base_path = os.path.abspath(os.path.join(cur_path, ".."))
-sys.path.append(base_path)
-
+import qi.logger.logcfg
 from app import server
 
 log = logging.getLogger("qi")

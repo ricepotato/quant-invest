@@ -1,65 +1,12 @@
 #-*- coding: utf-8 -*-
-import os
-import sys
-import json
-import logging
 
-from contextlib import contextmanager
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import (create_engine, Column, Integer, String, 
                         FLOAT, DATETIME, SMALLINT)
 from sqlalchemy import Index, UniqueConstraint
 from sqlalchemy.schema import ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.inspection import inspect
-from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 
-cur_path = os.path.dirname(__file__)
-comm_path = os.path.join(cur_path, "..")
-
-sys.path.append(comm_path)
-
-log = logging.getLogger("qi.common.database")
-
-def get_conf(conf_path=None):
-    """ json 설정 파일을 읽어온다.
-    기본 설정파일 경로는 파일경로/database.conf
-    설정 파일 경로를 지정하지 않으면 기본 파일경로에서 읽어온다.
-
-    @param conf_path : str
-    @return : dict
-    """
-    log.debug("reading conf file...")
-    if conf_path is None:
-        conf_path = os.path.join(cur_path, "database.conf")
-    
-    log.debug("conf_path=%s", conf_path)
-    try:
-        with open(conf_path, "r") as f:
-            conf_data = f.read()
-        cfg = json.loads(conf_data)
-    except IOError as e:
-        log.error("get config io error. %s", e)
-        return None
-    except ValueError as e:
-        log.error("get config value error. %s", e)
-        return None
-    return cfg
- 
-cfg = get_conf()
-
-conn_str = "mysql://{}:{}@{}:{}/{}?charset=utf8".format(cfg["user"], cfg["password"], 
-                                           cfg["host"], cfg["port"], cfg["database"])
 Base = declarative_base()
-engine = create_engine(conn_str, convert_unicode=False, echo=False) 
-
-class Dictionary(dict):
-    
-    def __getattr__(self, key):
-        return self[key]
-
-    __setattr__ = dict.__setitem__
-    __delattr__ = dict.__delitem__
 
 class Serializer(object):
     obj_map = {}
@@ -85,7 +32,6 @@ class Serializer(object):
             ret[key] = self._make_dict(getattr(self, key))
 
         return ret
-
 
 # 시장 구분 용도
 class Market(Base, Serializer):
@@ -246,54 +192,3 @@ class ERBoard(Base, Serializer):
 
     def __repr__(self):
         return "<ERBoard('%s')>" % (self.code)
-
-class Singleton(type):
-    """Singleton.
-    @see: http://stackoverflow.com/questions/6760685/creating-a-singleton-in-python
-    """
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls._instances[cls]
-
-class Database(object):
-
-    __metaclass__ = Singleton
-
-    def __init__(self):
-        self.engine = engine
-        self.Session = sessionmaker()
-        self.Session.configure(bind=engine)
-
-    def __del__(self):
-        """Disconnects pool."""
-        self.engine.dispose()
-
-    @contextmanager
-    def session_scope(self):
-        """Provide a transactional scope around a series of operations."""
-        session = self.Session()
-        try:
-            yield session
-            session.commit()
-        except SQLAlchemyError as e:
-            log.error("Database Error. %s", e)
-            session.rollback()
-        finally:
-            session.close()
-
-    def create_all(self):
-        """ creates all tables. """
-        try:
-            Base.metadata.create_all(self.engine)
-        except SQLAlchemyError as e:
-            log.error("Unable to create or connect to database: %s", e)
-
-    def drop_all(self):
-        """Drop all tables."""
-        try:
-            Base.metadata.drop_all(self.engine)
-        except SQLAlchemyError as e:
-            log.error("Unable to drop all tables of the database: %s", e)

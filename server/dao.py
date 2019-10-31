@@ -1,5 +1,5 @@
 
-from common.database import Database, Company, Market, FinancialReport
+from qi.database import Database, Company, Market, FinancialReport
 
 class StockDao:
     def __init__(self):

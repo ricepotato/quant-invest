@@ -20,19 +20,19 @@
         }
     },
     "comp_dao":{
-        "class":"common.database.CompanyDao",
+        "class":"qi.database.CompanyDao",
         "init_args":[
             {"bean":"db"}
         ]
     },
     "price_dao":{
-        "class":"common.database.PriceDao",
+        "class":"qi.database.PriceDao",
         "init_args":[
             {"bean":"db"}
         ]
     },
     "erboard_dao":{
-        "class":"common.database.ERBoardDao",
+        "class":"qi.database.ERBoardDao",
         "init_args":[
             {"bean":"db"}
         ]
@@ -46,7 +46,7 @@
         }
     },
     "db":{
-        "class":"common.database.Database"
+        "class":"qi.database.Database"
     },
     "calc":{
         "class":"data.calc.Calc",

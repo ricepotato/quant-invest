@@ -6,7 +6,7 @@ import configparser
 from setuptools import setup
 
 config = configparser.ConfigParser()
-config.read('conf.ini')
+config.read('package.ini')
 
 setup(name="qi",
       version=config["qi"]["version"],

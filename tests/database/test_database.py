@@ -5,8 +5,8 @@ import sys
 import unittest
 import logging
 
-from common.database.database import Database
-from common.database.dao import *
+from qi.database.database import Database
+from qi.database.dao import *
 
 log = logging.getLogger("qi.tests.database")
 log.addHandler(logging.StreamHandler())
