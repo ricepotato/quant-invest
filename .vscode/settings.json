@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/Users/seogjunsagong/envs/qi/bin/python",
+    "python.pythonPath": "${env:QI_PYTHON_ENV}",
     "python.testing.unittestEnabled": true,
     "python.testing.unittestArgs": [
         "-v",
