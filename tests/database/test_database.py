@@ -5,8 +5,9 @@ import sys
 import unittest
 import logging
 
-from qi.database.database import Database
+from qi.database import DBFactory
 from qi.database.dao import *
+from schemas import *
 
 log = logging.getLogger("qi.tests.database")
 log.addHandler(logging.StreamHandler())
@@ -14,9 +15,9 @@ log.setLevel(logging.DEBUG)
 
 class TestDatabase(unittest.TestCase):
     def setUp(self):
-        #Database().drop_all()
-        self.db = Database()
-        Database().create_all()
+        self.db = DBFactory.from_conf("conf/database.ini")
+        self.db.drop_all()
+        self.db.create_all()
         with self.db.session_scope() as s:
             s.query(Market).delete()
 

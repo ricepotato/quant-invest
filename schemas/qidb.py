@@ -5,8 +5,17 @@ from sqlalchemy import (create_engine, Column, Integer, String,
                         FLOAT, DATETIME, SMALLINT)
 from sqlalchemy import Index, UniqueConstraint
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.inspection import inspect
 
 Base = declarative_base()
+
+class Dictionary(dict):
+    
+    def __getattr__(self, key):
+        return self[key]
+
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
 
 class Serializer(object):
     obj_map = {}
