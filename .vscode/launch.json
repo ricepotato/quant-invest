@@ -2,7 +2,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Test SCReader",
+      "name": "Python: TestMongo",
+      "type": "python",
+      "request": "launch",
+      "module": "unittest",
+      "args": ["tests.test_mongo"]
+    },
+    {
+      "name": "Python: SCReader",
       "type": "python",
       "request": "launch",
       "module": "unittest",
