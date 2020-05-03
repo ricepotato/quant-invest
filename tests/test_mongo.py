@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import unittest
 
+from app.database.mongo import get_db
+
+
 class MongoTestCase(unittest.TestCase):
     def setUp(self):
         pass
@@ -9,4 +12,10 @@ class MongoTestCase(unittest.TestCase):
         pass
 
     def test_mongo(self):
-        pass
+        res = get_db()
+        assert res
+        db = res["qi"]
+        rs = db.test.find()
+        rs_item = list(rs)
+        assert rs_item
+
