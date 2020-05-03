@@ -12,7 +12,7 @@ class TestReader(unittest.TestCase):
 
     def test_reader(self):
         reader = SCReader()
-        res = reader.read_file("data/KOSDAQ.csv")
+        res = reader.read_file("data/KOSDAQ_2020.csv")
         assert res
-        res = reader.read_file("data/KOSPI.csv")
+        res = reader.read_file("data/KOSPI_2020.csv")
         assert res
