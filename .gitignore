@@ -3,3 +3,4 @@
 *.log
 .venv
 conf
+data/comp_guide_html
