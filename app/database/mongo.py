@@ -12,7 +12,7 @@ def get_mongo_client(host, user, password):
     return client
 
 
-def get_db():
+def get_client():
     config = configparser.ConfigParser()
     config.read("conf/mongodb.conf")
     section = host = config["mongodb"]

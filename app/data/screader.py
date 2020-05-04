@@ -13,7 +13,7 @@ class SCReader(object):
     def __init__(self):
         pass
 
-    def from_file(self, path):
+    def _from_file(self, path):
         log.debug("reading file. path=%s", path)
         with open(path, "r", encoding="UTF8") as f:
             rdr = csv.reader(f)
@@ -52,6 +52,6 @@ class SCReader(object):
         return res
 
     def read_file(self, path):
-        data = self.from_file(path)
+        data = self._from_file(path)
         res = self.parse(data)
         return res
