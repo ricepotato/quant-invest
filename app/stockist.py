@@ -5,7 +5,7 @@ from app.data.screader import SCReader
 from app.database.dao import MongoDao
 
 
-log = logging.getLogger("qi")
+log = logging.getLogger("qi.stockist")
 log.addHandler(logging.StreamHandler())
 log.setLevel(logging.INFO)
 
