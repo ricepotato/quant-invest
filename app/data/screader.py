@@ -1,15 +1,15 @@
-#-*- coding: utf-8 -*-
-import os
-import sys
-import json
+# -*- coding: utf-8 -*-
+
 import logging
 import csv
 
 log = logging.getLogger("qi.data.reader")
 
+
 class SCReader(object):
-    """ Stock csv reader 
+    """ Stock csv reader
     주식정보 csv 파일을 읽어 list 로 반환한다. """
+
     def __init__(self):
         pass
 
@@ -17,11 +17,10 @@ class SCReader(object):
         log.debug("reading file. path=%s", path)
         with open(path, "r", encoding="UTF8") as f:
             rdr = csv.reader(f)
-            data = list(map(lambda line : line, rdr))
+            data = list(map(lambda line: line, rdr))
         return data
 
     def _validate(self, col_list):
-        num = int(col_list[0])
         if len(col_list[1]) != 6:
             raise ValueError("code value length erorr.")
         if len(col_list[3]) != 6:
@@ -34,12 +33,17 @@ class SCReader(object):
         name = col_list[2]
         cate_code = col_list[3]
         desc = col_list[4]
-        
-        return {"num":num, "code":code, "name":name, 
-                "category_code":cate_code, "desc":desc}
+
+        return {
+            "num": num,
+            "code": code,
+            "name": name,
+            "category_code": cate_code,
+            "desc": desc,
+        }
 
     def parse(self, data):
-        
+
         res = []
         for line in data:
             col_list = line
