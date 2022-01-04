@@ -14,6 +14,9 @@ class FinancialReport:
         self.per = per
         self.pbr = pbr
 
+    def __eq__(self, other):
+        return self.code == other.code and self.period == other.period
+
 
 @dataclass
 class Stock:
@@ -32,7 +35,7 @@ class Stock:
         self.category_code = category_code
         self.desc = desc
         self.market_cap = market_cap
-        self.fr: List[FinancialReport] = []
+        self.fr: dict = {}
 
     @classmethod
     def from_dict(cls, obj: dict):
@@ -45,15 +48,13 @@ class Stock:
             stock.market_cap = obj["market_cap"]
         if obj.get("fr"):
             for period, fr_item in obj.get("fr").items():
-                stock.fr.append(
-                    FinancialReport(
-                        obj["code"],
-                        period,
-                        fr_item["roa"],
-                        fr_item["roe"],
-                        fr_item["per"],
-                        fr_item["pbr"],
-                    )
+                stock.fr[period] = FinancialReport(
+                    obj["code"],
+                    period,
+                    fr_item["roa"],
+                    fr_item["roe"],
+                    fr_item["per"],
+                    fr_item["pbr"],
                 )
 
         return stock
@@ -69,12 +70,12 @@ class Stock:
 
         if self.fr:
             fr = {}
-            for item in self.fr:
-                fr[item.period] = {
-                    "roa": item.roa,
-                    "roe": item.roe,
-                    "per": item.per,
-                    "pbr": item.pbr,
+            for period, fr_item in self.fr.items():
+                fr[period] = {
+                    "roa": fr_item.roa,
+                    "roe": fr_item.roe,
+                    "per": fr_item.per,
+                    "pbr": fr_item.pbr,
                 }
             result["fr"] = fr
 

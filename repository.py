@@ -20,10 +20,7 @@ class MongodbRepository(Repository):
     def add(self, stock: Stock) -> bool:
         self.client = self._get_client()
         sc = self.client.qi.stock
-        obj = sc.find_one({"code": stock.code})
-        if obj is None:
-            sc.insert_one(stock.to_dict())
-
+        sc.replace_one({"code": stock.code}, stock.to_dict())
         return True
 
     def get(self, code: str) -> Stock:
