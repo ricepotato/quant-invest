@@ -9,3 +9,4 @@ build/server/main/*.tar.gz
 *.log
 package/qi.egg-info/*
 package/dist/*
+.env
