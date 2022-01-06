@@ -24,7 +24,7 @@ class MongodbRepository(Repository):
     def add(self, stock: Stock) -> bool:
         self.client = self._get_client()
         sc = self.client.qi.stock
-        sc.replace_one({"code": stock.code}, stock.to_dict())
+        sc.insert_one(stock.to_dict())
         return True
 
     def get(self, code: str) -> Stock:
