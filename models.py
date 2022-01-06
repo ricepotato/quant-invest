@@ -80,3 +80,6 @@ class Stock:
             result["fr"] = fr
 
         return result
+
+    def __str__(self):
+        return f"[{self.market}] {self.name}({self.code})"

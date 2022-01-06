@@ -1,8 +1,8 @@
 from abc import abstractmethod
 import os
+from typing import List
 import pymongo
 from pymongo.mongo_client import MongoClient
-
 from models import Stock
 
 
@@ -13,6 +13,10 @@ class Repository:
 
     @abstractmethod
     def get(self, code: str) -> Stock:
+        pass
+
+    @abstractmethod
+    def get_all(self, market: str) -> List[Stock]:
         pass
 
 
@@ -27,7 +31,17 @@ class MongodbRepository(Repository):
         self.client = self._get_client()
         sc = self.client.qi.stock
         obj = sc.find_one({"code": code})
-        return Stock.from_dict(obj)
+        if obj is not None:
+            return Stock.from_dict(obj)
+        return None
+
+    def get_all(self, market: str = None) -> List[Stock]:
+        self.client = self._get_client()
+        sc = self.client.qi.stock
+        query = {}
+        if market is not None:
+            query["market"] = market
+        return [Stock.from_dict(obj) for obj in sc.find(query)]
 
     def _get_mongo_client(self, host, user, password) -> MongoClient:
         """mongodb+srv://ricepotato:<password>@cluster0-gpvm5.gcp.mongodb.net/wetube?retryWrit"""
