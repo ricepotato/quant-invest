@@ -14,10 +14,15 @@ class FinancialReport:
         self.per = per
         self.pbr = pbr
 
-    @staticmethod
+    @classmethod
     def from_dict(cls, obj: dict):
         return cls(
-            obj["code"], obj["period"], obj["roa"], obj["roe"], obj["per"], obj["pbr"],
+            obj["code"],
+            obj["period"],
+            obj["roa"],
+            obj["roe"],
+            obj["per"],
+            obj["pbr"],
         )
 
     def __eq__(self, other):

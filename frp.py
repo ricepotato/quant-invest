@@ -13,7 +13,7 @@ class FinancialReportProvider:
 
 class CompanyGuideFinancialReportProvider(FinancialReportProvider):
     def get_financial_report(self, code: str) -> List[FinancialReport]:
-        url = self._get_url()
+        url = self._get_url(code)
         html = self._get_html(url)
         result = self._parse_html(html)
 
@@ -23,6 +23,15 @@ class CompanyGuideFinancialReportProvider(FinancialReportProvider):
 
         fr_list = map(_ufr, result)
         return [FinancialReport.from_dict(fr) for fr in fr_list]
+
+    def _str_to_float(self, src):
+        if src == "" or src == "N/A":
+            return None
+
+        try:
+            return float(src)
+        except ValueError:
+            return None
 
     def _get_url(self, code: str) -> str:
         # https://comp.fnguide.com/SVO2/ASP/SVD_main.asp?pGB=1&gicode=A005930&cID=&MenuYn=Y&ReportGB=&NewMenuID=11&stkGb=&strResearchYN=
@@ -45,10 +54,10 @@ class CompanyGuideFinancialReportProvider(FinancialReportProvider):
         # res["market_cap"] = int(market_cap)
         for idx in range(1, 6):
             sel_period = f"#highlight_D_Y > table > thead > tr.td_gapcolor2 > th:nth-child({idx})"
-            sel_roa = f"#highlight_D_Y > table > tbody > tr:nth-child(16) > td:nth-child({idx+1})"
-            sel_roe = f"#highlight_D_Y > table > tbody > tr:nth-child(17) > td:nth-child({idx+1})"
-            sel_per = f"#highlight_D_Y > table > tbody > tr:nth-child(21) > td:nth-child({idx+1})"
-            sel_pbr = f"#highlight_D_Y > table > tbody > tr:nth-child(22) > td:nth-child({idx+1})"
+            sel_roa = f"#highlight_D_Y > table > tbody > tr:nth-child(17) > td:nth-child({idx+1})"
+            sel_roe = f"#highlight_D_Y > table > tbody > tr:nth-child(18) > td:nth-child({idx+1})"
+            sel_per = f"#highlight_D_Y > table > tbody > tr:nth-child(22) > td:nth-child({idx+1})"
+            sel_pbr = f"#highlight_D_Y > table > tbody > tr:nth-child(23) > td:nth-child({idx+1})"
 
             period = self._get_text_from_selector(bs, sel_period)
             roa = self._str_to_float(self._get_text_from_selector(bs, sel_roa))
